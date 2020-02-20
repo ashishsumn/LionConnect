@@ -1,0 +1,32 @@
+<resources>
+
+    <string name="app_name">LionConnect</string>
+
+    <!-- Login Page -->
+    <string name="enter_uid_tv">Enter Username</string>
+    <string name="enter_uid_et">Username</string>
+    <string name="enter_pwd_tv">Enter Password</string>
+    <string name="enter_pwd_et">Password</string>
+    <string name="login">Login</string>
+    <string name="new_user">New User</string>
+
+    <!-- Registration Page -->
+
+    <string name="name_tv">Enter Your Name</string>
+    <string name="name_et">name</string>
+    <string name="name_autofillhint">name</string>
+    <string name="email_tv">PSU Email ID</string>
+    <string name="email_et">Email</string>
+    <string name="uid_tv">Choose Username</string>
+    <string name="uid_et">Username</string>
+    <string name="pwd_tv">Choose Password</string>
+    <string name="pwd_et">Password</string>
+    <string name="conf_pwd_tv">Confirm Password</string>
+    <string name="role_tv">You are</string>
+    <string name="RB1">Student</string>
+    <string name="RB2">Teacher</string>
+    <string name="register">Register</string>
+    <string name="to_login">Back to Login</string>
+
+    <string name="action_settings">Setting</string>
+</resources>

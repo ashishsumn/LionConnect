@@ -29,4 +29,8 @@
     <string name="to_login">Back to Login</string>
 
     <string name="action_settings">Setting</string>
+    <string name="title_activity_bottom_nav">bottomNavActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Search</string>
+    <string name="title_notifications">Profile</string>
 </resources>

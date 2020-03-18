@@ -70,7 +70,8 @@
         app:layout_constraintTop_toBottomOf="@+id/login_form"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/login"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:onClick="loginClick"/>
 
     <Button
         android:id="@+id/new_user_button"

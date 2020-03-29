@@ -33,4 +33,5 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Search</string>
     <string name="title_notifications">Profile</string>
+    <string name="postTitle">What\'s on your mind?</string>
 </resources>

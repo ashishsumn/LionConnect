@@ -1,5 +1,6 @@
 package edu.psu.lionconnect.ui.home;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 
@@ -41,6 +44,13 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
+
+
+        String tempUsername = "";
+
+
+
+
 
         ArrayList data = new ArrayList<feedDataStructure>();
         data.add(new feedDataStructure(R.mipmap.image1, "A"));

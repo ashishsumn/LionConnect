@@ -3,6 +3,14 @@ package edu.psu.lionconnect;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 public class postDataModel {
 
     private static postDataModel instance = null;

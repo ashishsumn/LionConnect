@@ -3,8 +3,8 @@
     <string name="app_name">LionConnect</string>
 
     <!-- Login Page -->
-    <string name="enter_uid_tv">Enter Username</string>
-    <string name="enter_uid_et">Username</string>
+    <string name="enter_uid_tv">PSU Email ID</string>
+    <string name="enter_uid_et">Email</string>
     <string name="enter_pwd_tv">Enter Password</string>
     <string name="enter_pwd_et">Password</string>
     <string name="login">Login</string>

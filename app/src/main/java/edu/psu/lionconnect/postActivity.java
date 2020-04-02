@@ -23,8 +23,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -56,6 +59,7 @@ public class postActivity extends AppCompatActivity {
         im = findViewById(R.id.image_post);
         im.setImageResource(R.drawable.image1_background);
         et = findViewById(R.id.text_post);
+        user = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     public void selectImage(View view) {
@@ -76,6 +80,7 @@ public class postActivity extends AppCompatActivity {
             im.setImageBitmap(imageBm);
             justAnInstance.setImagePath(data.getData());
             justAnInstance.setDescription(et.getText().toString());
+            justAnInstance.setUser(user);
         }else{
 //            Code for reselection prompt
             int a ;
@@ -139,18 +144,17 @@ public class postActivity extends AppCompatActivity {
                     findViewById(R.id.progress_circular).setVisibility(View.GONE);
                     findViewById(R.id.button_done).setVisibility(View.VISIBLE);
 
-                    HashMap<String,String> postHash = new HashMap<>();
+                    HashMap<String, Object> postHash = new HashMap<>();
                     HashMap<String, Object> childUpdates = new HashMap<>();
                     postHash.put("photos", photoId);
                     postHash.put("description",justAnInstance.getDescription());
+                    postHash.put("timestamp", ServerValue.TIMESTAMP);
 
                     Map<String,Object> postUserHash = new HashMap<>();
                     postUserHash.put("posts."+postId, true);
 
                     fsInstance.collection("posts").document(postId).set(postHash);
                     fsInstance.collection("users").document(user).update(postUserHash);
-
-
 //                    postRef.setValue(postHash);
                 }else{
                     Toast.makeText(getApplicationContext(),"Unable to upload the post",Toast.LENGTH_SHORT).show();

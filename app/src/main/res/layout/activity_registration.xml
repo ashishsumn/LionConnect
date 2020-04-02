@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterationActivity">
+    tools:context=".RegistrationActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,28 +15,28 @@
         android:orientation="vertical"
         android:id="@+id/registration_form">
 
-        <TextView
-            android:id="@+id/nameTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/name_tv"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <TextView-->
+<!--            android:id="@+id/nameTV"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:text="@string/name_tv"-->
+<!--            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-        <EditText
-            android:id="@+id/nameET"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:ems="10"
-            android:hint="@string/name_et"
-            android:inputType="text"
-            app:layout_constraintTop_toBottomOf="@+id/nameTV"
-            android:autofillHints="@string/name_autofillhint"/>
+<!--        <EditText-->
+<!--            android:id="@+id/nameET"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:ems="10"-->
+<!--            android:hint="@string/name_et"-->
+<!--            android:inputType="text"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/nameTV"-->
+<!--            android:autofillHints="@string/name_autofillhint"/>-->
 
         <TextView
             android:id="@+id/emailTV"
@@ -47,7 +47,7 @@
             android:text="@string/email_tv"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameET"/>
+            app:layout_constraintTop_toBottomOf="parent"/>
 
         <EditText
             android:id="@+id/emailET"
@@ -176,7 +176,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_form"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:onClick="onClick"/>
 
     <Button
         android:id="@+id/to_login_button"
@@ -187,6 +188,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_button"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:onClick="onClick"/>
 
 </LinearLayout>

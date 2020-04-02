@@ -26,10 +26,12 @@ public class RecyclerFeedDataAdapter extends RecyclerView.Adapter<RecyclerFeedDa
     public class CardViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
         public TextView text;
+        public TextView user;
         public CardViewHolder(View itemView){
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.feedImage);
             text = (TextView) itemView.findViewById(R.id.feedText);
+            user = (TextView) itemView.findViewById(R.id.feedUser);
         }
     }
 
@@ -52,8 +54,9 @@ public class RecyclerFeedDataAdapter extends RecyclerView.Adapter<RecyclerFeedDa
         feedDataStructure listItem = partFeed.get(position);
 
         // Set item views based on your views and data model
-        ((TextView) viewHolder.text).setText(listItem.getText().toString());
-        ((ImageView) viewHolder.image).setImageResource(listItem.getImage_path());
+        (viewHolder.text).setText(listItem.getText().toString());
+        (viewHolder.image).setImageResource(listItem.getImage_path());
+        (viewHolder.user).setText(listItem.getUser());
     }
     @Override
     public int getItemCount() {

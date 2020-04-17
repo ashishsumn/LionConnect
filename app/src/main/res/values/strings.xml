@@ -3,8 +3,8 @@
     <string name="app_name">LionConnect</string>
 
     <!-- Login Page -->
-    <string name="enter_uid_tv">Enter Username</string>
-    <string name="enter_uid_et">Username</string>
+    <string name="enter_uid_tv">PSU Email ID</string>
+    <string name="enter_uid_et">Email</string>
     <string name="enter_pwd_tv">Enter Password</string>
     <string name="enter_pwd_et">Password</string>
     <string name="login">Login</string>
@@ -27,6 +27,7 @@
     <string name="RB2">Teacher</string>
     <string name="register">Register</string>
     <string name="to_login">Back to Login</string>
+    <string name="email_val">psu.edu</string>
 
     <string name="action_settings">Setting</string>
     <string name="title_activity_bottom_nav">bottomNavActivity</string>
@@ -34,4 +35,5 @@
     <string name="title_dashboard">Search</string>
     <string name="title_notifications">Profile</string>
     <string name="postTitle">What\'s on your mind?</string>
+    <string name="remember_me">Remember Me</string>
 </resources>

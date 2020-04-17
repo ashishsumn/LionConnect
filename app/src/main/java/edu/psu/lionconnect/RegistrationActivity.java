@@ -17,6 +17,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 //import com.google.firebase.auth.FirebaseAuthMultiFactorException;
@@ -30,6 +33,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private EditText mEmailField;
     private EditText mPasswordField;
+    private EditText mConfirmPasswordField;
     private EditText mUserName;
 
     @Override
@@ -38,6 +42,7 @@ public class RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
         mEmailField = findViewById(R.id.emailET);
         mPasswordField = findViewById(R.id.pwdET);
+        mConfirmPasswordField = findViewById(R.id.confPwdET);
         mUserName = findViewById(R.id.uidET);
 
         mAuth = FirebaseAuth.getInstance();
@@ -63,11 +68,25 @@ public class RegistrationActivity extends AppCompatActivity {
                             updateUserProfile(user);
                             forwardToLogin();
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(RegistrationActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-//                            updateUI(null);
+//                            // If sign in fails, display a message to the user.
+//                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+//                            Toast.makeText(RegistrationActivity.this, "Authentication failed.",
+//                                    Toast.LENGTH_SHORT).show();
+////                            updateUI(null);
+                            try {
+                                throw task.getException();
+                            } catch(FirebaseAuthWeakPasswordException e) {
+                                mPasswordField.setError("Weak password, password should be at least 6 characters");
+                                mPasswordField.requestFocus();
+//                            } catch(FirebaseAuthInvalidCredentialsException e) {
+//                                mTxtEmail.setError(getString(R.string.error_invalid_email));
+//                                mTxtEmail.requestFocus();
+                            } catch(FirebaseAuthUserCollisionException e) {
+                                mEmailField.setError("User already exists, please login");
+                                mEmailField.requestFocus();
+                            } catch(Exception e) {
+                                Log.e(TAG, e.getMessage());
+                            }
                         }
 
 //                        // [START_EXCLUDE]
@@ -76,9 +95,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     }
                 });
         // [END create_user_with_email]
-
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
     }
 
     // Validate email id and password fields
@@ -93,13 +109,47 @@ public class RegistrationActivity extends AppCompatActivity {
             mEmailField.setError(null);
         }
 
+        if(email.indexOf('@')==-1){
+            mEmailField.setError("Please enter a valid PSU email");
+            valid = false;
+        } else {
+            String[] email_split_on_at = email.split("@",2);
+
+            if(!email_split_on_at[1].equalsIgnoreCase("psu.edu")){
+                mEmailField.setError("Please enter a valid PSU email");
+                valid = false;
+            } else {
+                mEmailField.setError(null);
+            }
+        }
+
         String password = mPasswordField.getText().toString();
+        String confirm_password = mConfirmPasswordField.getText().toString();
+
         if (TextUtils.isEmpty(password)) {
             mPasswordField.setError("Required.");
             valid = false;
         } else {
             mPasswordField.setError(null);
         }
+
+        if (TextUtils.isEmpty(confirm_password)) {
+            mConfirmPasswordField.setError("Required.");
+            valid = false;
+        } else {
+            mConfirmPasswordField.setError(null);
+        }
+
+        if (!password.equals(confirm_password)) {
+            mPasswordField.setError("Passwords do not match");
+            mConfirmPasswordField.setError("Passwords do not match");
+            valid = false;
+        } else {
+            mPasswordField.setError(null);
+            mConfirmPasswordField.setError(null);
+        }
+
+
 
         return valid;
     }

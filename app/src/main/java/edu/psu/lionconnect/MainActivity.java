@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         mPasswordField = findViewById(R.id.pwdET);
         mAuth = FirebaseAuth.getInstance();
         remember= findViewById(R.id.chkRemember);
-         
+
         SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
         String checkbox = preferences.getString("remember", "");
         if(checkbox.equals("true")){

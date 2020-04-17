@@ -27,6 +27,7 @@
     <string name="RB2">Teacher</string>
     <string name="register">Register</string>
     <string name="to_login">Back to Login</string>
+    <string name="email_val">psu.edu</string>
 
     <string name="action_settings">Setting</string>
     <string name="title_activity_bottom_nav">bottomNavActivity</string>

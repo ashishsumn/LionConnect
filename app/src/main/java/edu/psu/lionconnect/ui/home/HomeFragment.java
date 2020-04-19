@@ -61,13 +61,22 @@ public class HomeFragment extends Fragment {
 
     private class feedDataGet extends AsyncTask<String, Void, feedDataStructure[]>{
 
+        homeViewModel.makeFeed();
 
         @Override
         protected feedDataStructure[] doInBackground(String... strings) {
             return new feedDataStructure[0];
         }
+        return root;
     }
 
+//    private class fillFeed extends AsyncTask<,Void,Void>{
+//
+//        @Override
+//        protected Object doInBackground(Object[] objects) {
+//            return null;
+//        }
+//    }
 
     public void getData(){
         FirebaseFirestore fsInstance = FirebaseFirestore.getInstance();
@@ -109,6 +118,7 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+
     public void onResume() {
         super.onResume();
         if (mListState != null) {

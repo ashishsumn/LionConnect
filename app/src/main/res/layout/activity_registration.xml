@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollY="@dimen/activity_horizontal_margin"
     tools:context=".RegistrationActivity">
 
     <LinearLayout
@@ -14,29 +15,6 @@
         android:layout_marginTop="50dp"
         android:orientation="vertical"
         android:id="@+id/registration_form">
-
-<!--        <TextView-->
-<!--            android:id="@+id/nameTV"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="16dp"-->
-<!--            android:layout_marginEnd="16dp"-->
-<!--            android:text="@string/name_tv"-->
-<!--            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--        <EditText-->
-<!--            android:id="@+id/nameET"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="16dp"-->
-<!--            android:layout_marginEnd="16dp"-->
-<!--            android:ems="10"-->
-<!--            android:hint="@string/name_et"-->
-<!--            android:inputType="text"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/nameTV"-->
-<!--            android:autofillHints="@string/name_autofillhint"/>-->
 
         <TextView
             android:id="@+id/emailTV"
@@ -102,7 +80,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/pwd_et"
-            android:inputType="text"
+            android:inputType="textPassword"
             app:layout_constraintTop_toBottomOf="@+id/pwdTV"
             android:autofillHints="@string/name_autofillhint"/>
 
@@ -124,7 +102,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/pwd_et"
-            android:inputType="text"
+            android:inputType="textPassword"
             app:layout_constraintTop_toBottomOf="@+id/confPwdTV"
             android:autofillHints="@string/name_autofillhint"/>
 

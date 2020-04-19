@@ -23,11 +23,16 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -155,6 +160,7 @@ public class postActivity extends AppCompatActivity {
 
                     fsInstance.collection("posts").document(postId).set(postHash);
                     fsInstance.collection("users").document(user).update(postUserHash);
+
 //                    postRef.setValue(postHash);
                 }else{
                     Toast.makeText(getApplicationContext(),"Unable to upload the post",Toast.LENGTH_SHORT).show();

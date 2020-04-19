@@ -34,7 +34,6 @@ public class bottomNavActivity extends AppCompatActivity {
         Intent intent = new Intent(this, postActivity.class);
         startActivity(intent);
     }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();

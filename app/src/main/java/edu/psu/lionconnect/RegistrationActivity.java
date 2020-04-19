@@ -176,7 +176,7 @@ public class RegistrationActivity extends AppCompatActivity {
         String name = curr_user.getDisplayName();
         String email = curr_user.getEmail();
         String uid = curr_user.getUid();
-        Uri photoUrl = curr_user.getPhotoUrl();
+        //Uri photoUrl = curr_user.getPhotoUrl();
 
 
         //updating userName/Display name for the current user

@@ -59,16 +59,16 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    private class feedDataGet extends AsyncTask<String, Void, feedDataStructure[]>{
-
-        homeViewModel.makeFeed();
-
-        @Override
-        protected feedDataStructure[] doInBackground(String... strings) {
-            return new feedDataStructure[0];
-        }
-        return root;
-    }
+//    private class feedDataGet extends AsyncTask<String, Void, feedDataStructure[]>{
+//
+//        homeViewModel.makeFeed();
+//
+//        @Override
+//        protected feedDataStructure[] doInBackground(String... strings) {
+//            return new feedDataStructure[0];
+//        }
+//        return root;
+//    }
 
 //    private class fillFeed extends AsyncTask<,Void,Void>{
 //
@@ -78,27 +78,27 @@ public class HomeFragment extends Fragment {
 //        }
 //    }
 
-    public void getData(){
-        FirebaseFirestore fsInstance = FirebaseFirestore.getInstance();
-        FirebaseStorage fbsInstance = FirebaseStorage.getInstance();
-        final ArrayList<String> friendList = new ArrayList<>();
-        DocumentReference friends = fsInstance.collection("friends")
-                                                .document(FirebaseAuth.getInstance()
-                                                        .getCurrentUser().getUid());
-
-        friends.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Map<String, Object> a = documentSnapshot.getData();
-
-                for(String friend: a.keySet()){
-                    friendList.add(friend);
-                }
-                new feedDataGet().execute();
-            }
-        });
-
-    }
+//    public void getData(){
+//        FirebaseFirestore fsInstance = FirebaseFirestore.getInstance();
+//        FirebaseStorage fbsInstance = FirebaseStorage.getInstance();
+//        final ArrayList<String> friendList = new ArrayList<>();
+//        DocumentReference friends = fsInstance.collection("friends")
+//                                                .document(FirebaseAuth.getInstance()
+//                                                        .getCurrentUser().getUid());
+//
+//        friends.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                Map<String, Object> a = documentSnapshot.getData();
+//
+//                for(String friend: a.keySet()){
+//                    friendList.add(friend);
+//                }
+//                new feedDataGet().execute();
+//            }
+//        });
+//
+//    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

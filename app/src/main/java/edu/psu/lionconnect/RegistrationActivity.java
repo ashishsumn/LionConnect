@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,6 +19,11 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -27,11 +33,13 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText mPasswordField;
     private EditText mConfirmPasswordField;
     private EditText mUserName;
+    private FirebaseFirestore fsInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        fsInstance = FirebaseFirestore.getInstance();
         mEmailField = findViewById(R.id.emailET);
         mPasswordField = findViewById(R.id.pwdET);
         mConfirmPasswordField = findViewById(R.id.confPwdET);
@@ -72,6 +80,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
+
                             try {
                                 throw task.getException();
                             } catch(FirebaseAuthWeakPasswordException e) {
@@ -187,6 +196,25 @@ public class RegistrationActivity extends AppCompatActivity {
 
     // Redirect to login page on successful sign up
     private void forwardToLogin(){
+
+        final Map<String,Object> createUserhash = new HashMap();
+        final Map<String,Object> createFriendshash = new HashMap();
+        final String userId = mAuth.getCurrentUser().getUid();
+        createFriendshash.put("testUser",true);
+        createUserhash.put("firstName","");
+        createUserhash.put("lastName","");
+        createUserhash.put("email", mAuth.getCurrentUser().getEmail());
+        createUserhash.put("friends", createFriendshash);
+        Log.d("userId",userId);
+        fsInstance.collection("users").document(userId).set(createUserhash).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(RegistrationActivity.this, "Account Created! You are good to go!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

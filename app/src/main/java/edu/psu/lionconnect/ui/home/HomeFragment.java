@@ -12,6 +12,28 @@ import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+
+import org.w3c.dom.Document;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import edu.psu.lionconnect.R;
 
 public class HomeFragment extends Fragment {
@@ -32,6 +54,19 @@ public class HomeFragment extends Fragment {
 
         homeViewModel.makeFeed();
 
+//        getData();
+
+        return root;
+    }
+
+    private class feedDataGet extends AsyncTask<String, Void, feedDataStructure[]>{
+
+        homeViewModel.makeFeed();
+
+        @Override
+        protected feedDataStructure[] doInBackground(String... strings) {
+            return new feedDataStructure[0];
+        }
         return root;
     }
 
@@ -43,6 +78,27 @@ public class HomeFragment extends Fragment {
 //        }
 //    }
 
+    public void getData(){
+        FirebaseFirestore fsInstance = FirebaseFirestore.getInstance();
+        FirebaseStorage fbsInstance = FirebaseStorage.getInstance();
+        final ArrayList<String> friendList = new ArrayList<>();
+        DocumentReference friends = fsInstance.collection("friends")
+                                                .document(FirebaseAuth.getInstance()
+                                                        .getCurrentUser().getUid());
+
+        friends.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Map<String, Object> a = documentSnapshot.getData();
+
+                for(String friend: a.keySet()){
+                    friendList.add(friend);
+                }
+                new feedDataGet().execute();
+            }
+        });
+
+    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -62,6 +118,7 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+
     public void onResume() {
         super.onResume();
         if (mListState != null) {

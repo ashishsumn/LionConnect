@@ -33,12 +33,10 @@ public class HomeViewModel extends ViewModel {
         recList.setLayoutManager(llm);
 
         ArrayList data = new ArrayList<feedDataStructure>();
-        data.add(new feedDataStructure(R.mipmap.image1, "A"));
-        data.add(new feedDataStructure(R.mipmap.image1, "B"));
-        data.add(new feedDataStructure(R.drawable.image1_background, "C"));
-        data.add(new feedDataStructure(R.drawable.image1_background, "D"));
-        data.add(new feedDataStructure(R.drawable.image1_background, "E"));
-        data.add(new feedDataStructure(R.drawable.image1_background, "F"));
+
+        for(int i =0;i<10;i++){
+            data.add(new feedDataStructure(R.drawable.image1_background, "----------","----------"));
+        }
 
         RecyclerFeedDataAdapter adapter = new RecyclerFeedDataAdapter((data));
         recList.setAdapter(adapter);

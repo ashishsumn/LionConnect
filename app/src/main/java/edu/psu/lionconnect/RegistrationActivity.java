@@ -7,25 +7,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-//import com.google.android.gms.tasks.OnCompleteListener;
-//import com.google.android.gms.tasks.Task;
-//import com.google.firebase.auth.AuthResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-//import com.google.firebase.auth.FirebaseAuthMultiFactorException;
-//import com.google.firebase.auth.FirebaseUser;
-//import com.google.firebase.auth.MultiFactorResolver;
-////import com.google.firebase.quickstart.auth.R;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -64,15 +55,22 @@ public class RegistrationActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-//                            updateUI(user);
-                            updateUserProfile(user);
-                            forwardToLogin();
+                            if(user!=null){
+
+                                //sending email verification mail
+                                boolean emailVerified = user.isEmailVerified();
+                                if(!emailVerified) {
+                                    sendEmailVerification(user);
+                                    Toast.makeText(RegistrationActivity.this,"Verification email sent",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                                    updateUserProfile(user);
+                                    forwardToLogin();
+                            }
+
                         } else {
-//                            // If sign in fails, display a message to the user.
-//                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-//                            Toast.makeText(RegistrationActivity.this, "Authentication failed.",
-//                                    Toast.LENGTH_SHORT).show();
-////                            updateUI(null);
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             try {
                                 throw task.getException();
                             } catch(FirebaseAuthWeakPasswordException e) {
@@ -88,13 +86,8 @@ public class RegistrationActivity extends AppCompatActivity {
                                 Log.e(TAG, e.getMessage());
                             }
                         }
-
-//                        // [START_EXCLUDE]
-//                        hideProgressBar();
-//                        // [END_EXCLUDE]
                     }
                 });
-        // [END create_user_with_email]
     }
 
     // Validate email id and password fields
@@ -148,25 +141,44 @@ public class RegistrationActivity extends AppCompatActivity {
             mPasswordField.setError(null);
             mConfirmPasswordField.setError(null);
         }
-
-
-
         return valid;
     }
 
-    //Updating name and profile pic
-    private void updateUserProfile(FirebaseUser user){
-        Log.d(TAG, "User profile updated.");
-        String name = mUserName.getText().toString();
-        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                .setDisplayName(name).build();
+    // sending verification mail
+    public void sendEmailVerification(FirebaseUser user) {
 
-        user.updateProfile(profileUpdates)
+        user.sendEmailVerification()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "User profile updated.");
+                            Log.d(TAG, "Email sent.");
+                        }
+                    }
+                });
+    }
+
+    //Updating name and profile pic
+    private void updateUserProfile(FirebaseUser user){
+
+        final FirebaseUser curr_user = user;
+
+        String name = curr_user.getDisplayName();
+        String email = curr_user.getEmail();
+        String uid = curr_user.getUid();
+        //Uri photoUrl = curr_user.getPhotoUrl();
+
+
+        //updating userName/Display name for the current user
+        String name_to_update = mUserName.getText().toString();
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(name_to_update).build();
+        curr_user.updateProfile(profileUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (!task.isSuccessful()) {
+                            Log.d(TAG, "User profile update failed.");
                         }
                     }
                 });

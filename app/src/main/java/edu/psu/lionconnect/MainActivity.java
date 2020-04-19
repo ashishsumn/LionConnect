@@ -75,43 +75,42 @@ public class MainActivity extends AppCompatActivity {
     // Sign in
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
-        if (!validateForm()) {
+        if (!validateEmail() || !validatePassword()) {
             return;
         }
 
-        // [START sign_in_with_email]
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+                            // Sign in success
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             String name = user.getDisplayName();
-                            Toast.makeText(MainActivity.this,name,
-                                    Toast.LENGTH_SHORT).show();
-                            forwardToHome();
+
+                            boolean emailVerified = user.isEmailVerified();
+                                // if the user email is not verified
+                                if(!emailVerified) {
+                                    Toast.makeText(MainActivity.this,"Please verify your email before logging-in",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    forwardToHome();
+                                }
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(MainActivity.this, "Wrong EmailId or Password.",
                                     Toast.LENGTH_SHORT).show();
                         }
-
-//                        // [START_EXCLUDE]
-//                        if (!task.isSuccessful()) {
-//                            mStatusTextView.setText(R.string.auth_failed);
-//                        }
-//                        hideProgressBar();
-//                        // [END_EXCLUDE]
                     }
                 });
-        // [END sign_in_with_email]
     }
 
-    // Validate email id and password fields
-    private boolean validateForm() {
+    // Validate email id field
+    private boolean validateEmail() {
         boolean valid = true;
 
         String email = mEmailField.getText().toString();
@@ -121,6 +120,26 @@ public class MainActivity extends AppCompatActivity {
         } else {
             mEmailField.setError(null);
         }
+
+        if (email.indexOf('@') == -1) {
+            mEmailField.setError("Please enter a valid PSU email");
+            valid = false;
+        } else {
+            String[] email_split_on_at = email.split("@", 2);
+
+            if (!email_split_on_at[1].equalsIgnoreCase("psu.edu")) {
+                mEmailField.setError("Please enter a valid PSU email");
+                valid = false;
+            } else {
+                mEmailField.setError(null);
+            }
+        }
+        return valid;
+    }
+
+    // Validate password field
+    private boolean validatePassword() {
+        boolean valid = true;
 
         String password = mPasswordField.getText().toString();
         if (TextUtils.isEmpty(password)) {
@@ -139,6 +158,27 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // Sending password reset email
+    private void pwdReset(String emailAddress){
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        //String emailAddress = "user@example.com";
+
+        auth.sendPasswordResetEmail(emailAddress)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "Email sent.");
+                            Toast.makeText(MainActivity.this,"Password reset email sent",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            mEmailField.setError("Please enter a valid PSU email");
+                        }
+                    }
+                });
+    }
+
     // Respond to button clicks
     public void onClick(View v) {
         int i = v.getId();
@@ -147,6 +187,11 @@ public class MainActivity extends AppCompatActivity {
         } else if (i == R.id.new_user_button) {
             Intent intent = new Intent(this, RegistrationActivity.class);
             startActivity(intent);
+        }
+        else if (i == R.id.forgot_password_button){
+            if (validateEmail()) {
+                pwdReset(mEmailField.getText().toString());
+            }
         }
     }
 }

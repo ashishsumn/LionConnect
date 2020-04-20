@@ -56,7 +56,7 @@
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:hint="@string/enter_pwd_et"
-            android:inputType="textEmailAddress"
+            android:inputType="textPassword"
             app:layout_constraintTop_toBottomOf="@+id/pwdTV"
             android:autofillHints="@string/name_autofillhint"/>
 

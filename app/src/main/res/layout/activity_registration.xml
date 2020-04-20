@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollY="@dimen/activity_horizontal_margin"
     tools:context=".RegistrationActivity">
 
     <LinearLayout
@@ -37,29 +36,6 @@
             android:hint="@string/email_et"
             android:inputType="textEmailAddress"
             app:layout_constraintTop_toBottomOf="@+id/emailTV"
-            android:autofillHints="@string/name_autofillhint"/>
-
-        <TextView
-            android:id="@+id/uidTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/uid_tv"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emailET"/>
-
-        <EditText
-            android:id="@+id/uidET"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:ems="10"
-            android:hint="@string/uid_et"
-            android:inputType="text"
-            app:layout_constraintTop_toBottomOf="@+id/uidTV"
             android:autofillHints="@string/name_autofillhint"/>
 
         <TextView
@@ -105,45 +81,6 @@
             android:inputType="textPassword"
             app:layout_constraintTop_toBottomOf="@+id/confPwdTV"
             android:autofillHints="@string/name_autofillhint"/>
-
-        <TextView
-            android:id="@+id/roleTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/role_tv"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/confPwdET"/>
-
-
-
-        <RadioGroup
-            android:id="@+id/RB"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginHorizontal="40dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/roleTV">
-
-            <RadioButton
-                android:id="@+id/radioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/RB1"
-                android:layout_weight="1"
-                android:checked="true"/>
-
-            <RadioButton
-                android:id="@+id/radioButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/RB2"
-                android:layout_weight="1"/>
-        </RadioGroup>
 
     </LinearLayout>
 

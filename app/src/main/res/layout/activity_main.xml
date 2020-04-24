@@ -79,7 +79,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/login"
         android:layout_marginTop="20dp"
-        android:onClick="onClick"/>
+        android:onClick="onClick"
+        android:background="@color/colorPrimary"
+        android:textColor="#ffffff"/>
 
     <Button
         android:id="@+id/forgot_password_button"

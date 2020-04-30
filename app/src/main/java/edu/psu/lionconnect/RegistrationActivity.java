@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -112,6 +113,24 @@ public class RegistrationActivity extends AppCompatActivity {
                 mEmailField.setError(null);
             }
         }
+
+//        final EditText emailValidate = (EditText)findViewById(R.id.textMessage);
+
+//        final TextView textView = (TextView)findViewById(R.id.text);
+//
+//        email = email.trim();
+//
+//        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+//
+//        // onClick of button perform this simplest code.
+//        if (email.matches(emailPattern))
+//        {
+//            Toast.makeText(getApplicationContext(),"valid email address",Toast.LENGTH_SHORT).show();
+//        }
+//        else
+//        {
+//            Toast.makeText(getApplicationContext(),"Invalid email address", Toast.LENGTH_SHORT).show();
+//        }
 
         String password = mPasswordField.getText().toString();
         String confirm_password = mConfirmPasswordField.getText().toString();

@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
@@ -74,9 +74,9 @@ public class RegistrationActivity extends AppCompatActivity {
                             } catch(FirebaseAuthWeakPasswordException e) {
                                 mPasswordField.setError("Weak password, password should be at least 6 characters");
                                 mPasswordField.requestFocus();
-//                            } catch(FirebaseAuthInvalidCredentialsException e) {
-//                                mTxtEmail.setError(getString(R.string.error_invalid_email));
-//                                mTxtEmail.requestFocus();
+                            } catch(FirebaseAuthInvalidCredentialsException e) {
+                                mEmailField.setError("Invalid Credentials");
+                                mEmailField.requestFocus();
                             } catch(FirebaseAuthUserCollisionException e) {
                                 mEmailField.setError("User already exists, please login");
                                 mEmailField.requestFocus();
@@ -113,24 +113,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 mEmailField.setError(null);
             }
         }
-
-//        final EditText emailValidate = (EditText)findViewById(R.id.textMessage);
-
-//        final TextView textView = (TextView)findViewById(R.id.text);
-//
-//        email = email.trim();
-//
-//        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-//
-//        // onClick of button perform this simplest code.
-//        if (email.matches(emailPattern))
-//        {
-//            Toast.makeText(getApplicationContext(),"valid email address",Toast.LENGTH_SHORT).show();
-//        }
-//        else
-//        {
-//            Toast.makeText(getApplicationContext(),"Invalid email address", Toast.LENGTH_SHORT).show();
-//        }
 
         String password = mPasswordField.getText().toString();
         String confirm_password = mConfirmPasswordField.getText().toString();

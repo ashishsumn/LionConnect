@@ -3,10 +3,7 @@ package edu.psu.lionconnect;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -34,6 +31,12 @@ public class bottomNavActivity extends AppCompatActivity {
         Intent intent = new Intent(this, postActivity.class);
         startActivity(intent);
     }
+
+    public void searchClick(View view){
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

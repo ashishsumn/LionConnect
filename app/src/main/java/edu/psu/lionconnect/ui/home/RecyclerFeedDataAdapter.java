@@ -6,16 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
-
-
 import java.util.List;
-
 import edu.psu.lionconnect.R;
 
 public class RecyclerFeedDataAdapter extends RecyclerView.Adapter<RecyclerFeedDataAdapter.CardViewHolder>{
-
 
     private List<feedDataStructure> partFeed;
 

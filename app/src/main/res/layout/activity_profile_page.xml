@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="edu.psu.lionconnect.ui.notifications.ProfilePage">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:clipToPadding="false"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/profile_edit_button"
+        android:layout_width="67dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorPrimary"
+        android:onClick="profileEditClick"
+        android:text="Edit"
+        android:textColor="#ffffff" />
+
+    <ImageView
+        android:id="@+id/profile_page_image"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_gravity="left"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorPrimary"
+        android:textColor="#ffffff"
+        app:layout_constraintDimensionRatio="w,1:1" />
+
+
+    <TextView
+        android:id="@+id/tv_profile_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="profile_name"
+        android:textColor="@color/colorAccent"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_profile_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="profile_email"
+        android:textColor="@color/colorAccent"
+        android:textSize="15dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_profile_AboutMe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="About Me"
+        android:textColor="@color/colorAccent"
+        android:textSize="15dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_profile_bio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/colorAccent"
+        android:textStyle="italic"
+        android:textSize="15dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_profile_campus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="profile_campus"
+        android:textColor="@color/colorAccent"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_profile_major"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="profile_major"
+        android:textColor="@color/colorAccent"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_profile_city"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="profile_major"
+        android:textColor="@color/colorAccent"
+        android:textSize="15dp"
+        android:textStyle="italic" />
+
+</LinearLayout>
+
+</ScrollView>

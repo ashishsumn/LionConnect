@@ -29,18 +29,22 @@ public class MainActivity extends AppCompatActivity {
     private EditText mPasswordField;
     private CheckBox remember;
 
-    /* access modifiers changed from: protected */
-    public void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_main);
-        this.mEmailField = (EditText) findViewById(R.id.usernameET);
-        this.mPasswordField = (EditText) findViewById(R.id.pwdET);
-        this.mAuth = FirebaseAuth.getInstance();
-        this.remember = (CheckBox) findViewById(R.id.chkRemember);
-        String checkbox = getSharedPreferences("checkbox", 0).getString("remember", "");
-        if (checkbox.equals("true")) {
-            forwardToHome();
-        } else if (checkbox.equals("false")) {
+        setContentView(R.layout.activity_main);
+
+        mEmailField = findViewById(R.id.usernameET);
+        mPasswordField = findViewById(R.id.pwdET);
+        mAuth = FirebaseAuth.getInstance();
+        remember= findViewById(R.id.chkRemember);
+         
+        SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+        String checkbox = preferences.getString("remember", "");
+        if(checkbox.equals("true")){
+//            forwardToHome();
+//            Intent intent = new Intent(MainActivity.this, );
+        }else if(checkbox.equals("false")){
             Toast.makeText(this, "Please sign in", Toast.LENGTH_SHORT).show();
         }
         this.remember.setOnCheckedChangeListener(new OnCheckedChangeListener() {

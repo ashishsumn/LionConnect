@@ -4,44 +4,35 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -80,28 +71,33 @@ public class postActivity extends AppCompatActivity {
         if(resultCode == RESULT_OK){
 //            Code for uploading image
             Bitmap imageBm;
+            assert data != null;
             imageBm = getPath(data.getData());
 
             im.setImageBitmap(imageBm);
             justAnInstance.setImagePath(data.getData());
             justAnInstance.setDescription(et.getText().toString());
             justAnInstance.setUser(user);
-        }else{
-//            Code for reselection prompt
-            int a ;
         }
     }
 
     private Bitmap getPath(Uri image){
-        Bitmap bitmap = null;
+        float imageViewHeight = (float) this.im.getHeight();
+        float width = (float) ((View) this.im.getParent()).getWidth();
         try {
-            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image);
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), image);
+            float scaler = imageViewHeight / ((float) bitmap.getHeight());
+            if (scaler < 1.0f) {
+                return Bitmap.createScaledBitmap(bitmap, (int) (((float) bitmap.getWidth()) * scaler), (int) (((float) bitmap.getHeight()) * scaler), true);
+            }
+            return bitmap;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        return bitmap;
+        return null;
     }
 
     public void cancelClick(View view) {
@@ -113,7 +109,11 @@ public class postActivity extends AppCompatActivity {
     }
 
     public void postClick(View view) {
-        justAnInstance.setUser(user);
+        if (postDataModel.getImagePath() == null) {
+            Toast.makeText(getApplicationContext(), "Please select an image to post", Toast.LENGTH_SHORT).show();
+            return;
+        }
+//        justAnInstance.setUser(user);
         final String temp = justAnInstance.getUser();
         Uri file = justAnInstance.getImagePath();
         FirebaseApp.initializeApp(getApplicationContext());
@@ -131,7 +131,7 @@ public class postActivity extends AppCompatActivity {
         final String photoId = photoRef.getId();
 
 //        Get reference for the image to be inserted on the storage
-        StorageReference userRef = fbsInstance.getReference().child("images/"+ temp+"/"+photoId);
+        final StorageReference userRef = fbsInstance.getReference().child("images/"+ user +"/"+photoId);
         UploadTask upTask = userRef.putFile(file);
 
         Toast.makeText(getApplicationContext(),"Posting",Toast.LENGTH_SHORT).show();
@@ -139,7 +139,7 @@ public class postActivity extends AppCompatActivity {
         findViewById(R.id.button_post).setVisibility(View.GONE);
         findViewById(R.id.progress_circular).setVisibility(View.VISIBLE);
 
-        upTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+        upTask.addOnCompleteListener(this, new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                 if(task.isSuccessful()){
@@ -148,15 +148,18 @@ public class postActivity extends AppCompatActivity {
                     findViewById(R.id.button_post).setVisibility(View.GONE);
                     findViewById(R.id.progress_circular).setVisibility(View.GONE);
                     findViewById(R.id.button_done).setVisibility(View.VISIBLE);
-
+                    FieldValue serverTimestamp = FieldValue.serverTimestamp();
                     HashMap<String, Object> postHash = new HashMap<>();
                     HashMap<String, Object> childUpdates = new HashMap<>();
+                    postHash.put("user", user);
                     postHash.put("photos", photoId);
                     postHash.put("description",justAnInstance.getDescription());
-                    postHash.put("timestamp", ServerValue.TIMESTAMP);
+                    postHash.put("timestamp", serverTimestamp);
+                    postHash.put("userId", user);
+                    postHash.put("user", FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
 
                     Map<String,Object> postUserHash = new HashMap<>();
-                    postUserHash.put("posts."+postId, true);
+                    postUserHash.put("posts."+postId, serverTimestamp);
 
                     fsInstance.collection("posts").document(postId).set(postHash);
                     fsInstance.collection("users").document(user).update(postUserHash);
@@ -168,6 +171,17 @@ public class postActivity extends AppCompatActivity {
                     findViewById(R.id.button_post).setVisibility(View.VISIBLE);
                     findViewById(R.id.progress_circular).setVisibility(View.GONE);
                 }
+                justAnInstance.clearInstance();
+            }
+        }).addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                userRef.delete();
+                Toast.makeText(getApplicationContext(),"Unable to upload the post",Toast.LENGTH_SHORT).show();
+                findViewById(R.id.button_cancel).setVisibility(View.VISIBLE);
+                findViewById(R.id.button_post).setVisibility(View.VISIBLE);
+                findViewById(R.id.progress_circular).setVisibility(View.GONE);
+                justAnInstance.clearInstance();
             }
         });
     }

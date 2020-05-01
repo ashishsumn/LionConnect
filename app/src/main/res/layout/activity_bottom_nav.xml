@@ -31,4 +31,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/mobile_navigation" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_gravity="bottom|right|center_vertical|center_horizontal|center|end"
+        android:id="@+id/fab_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/icon_post"
+        android:onClick="fabClick"
+        android:contentDescription="@string/postTitle"
+        android:elevation="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view"
+        app:layout_constraintRight_toRightOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

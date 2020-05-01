@@ -114,23 +114,6 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         }
 
-//        final EditText emailValidate = (EditText)findViewById(R.id.textMessage);
-
-//        final TextView textView = (TextView)findViewById(R.id.text);
-//
-//        email = email.trim();
-//
-//        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-//
-//        // onClick of button perform this simplest code.
-//        if (email.matches(emailPattern))
-//        {
-//            Toast.makeText(getApplicationContext(),"valid email address",Toast.LENGTH_SHORT).show();
-//        }
-//        else
-//        {
-//            Toast.makeText(getApplicationContext(),"Invalid email address", Toast.LENGTH_SHORT).show();
-//        }
 
         String password = mPasswordField.getText().toString();
         String confirm_password = mConfirmPasswordField.getText().toString();

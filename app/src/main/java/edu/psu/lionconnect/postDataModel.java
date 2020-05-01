@@ -14,37 +14,37 @@ import java.util.Set;
 public class postDataModel {
 
     private static postDataModel instance = null;
-    private Uri imagePath;
     private String description;
+    private Uri imagePath;
     private String user;
 
+    private postDataModel() {
+    }
 
-    private postDataModel(){}
-
-    public static postDataModel getInstance(){
-        if(instance == null){
+    public static postDataModel getInstance() {
+        if (instance == null) {
             instance = new postDataModel();
         }
         return instance;
     }
 
-    public static void setImagePath(Uri input){
+    public static void setImagePath(Uri input) {
         instance.imagePath = input;
     }
 
-    public static void setDescription(String input){
+    public static void setDescription(String input) {
         instance.description = input;
     }
 
-    public static void setUser(String input){
+    public static void setUser(String input) {
         instance.user = input;
     }
 
-    public static Uri getImagePath(){
+    public static Uri getImagePath() {
         return instance.imagePath;
     }
 
-    public static String getDescription(){
+    public static String getDescription() {
         return instance.description;
     }
 
@@ -52,7 +52,9 @@ public class postDataModel {
         return instance.user;
     }
 
-    public static void clearInstance(){ instance = null; }
+    public static void clearInstance() {
+        instance = null;
+    }
 
 
 }

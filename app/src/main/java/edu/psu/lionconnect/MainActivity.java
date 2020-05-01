@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
         String checkbox = preferences.getString("remember", "");
         if(checkbox.equals("true")){
-//            forwardToHome();
+            forwardToHome();
 //            Intent intent = new Intent(MainActivity.this, );
         }else if(checkbox.equals("false")){
             Toast.makeText(this, "Please sign in", Toast.LENGTH_SHORT).show();

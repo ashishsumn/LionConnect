@@ -13,7 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="edu.psu.lionconnect.CreateProfileActivity"></activity>
+        <activity android:name=".ui.notifications.EditProfile"></activity>
+        <activity android:name=".ui.notifications.ProfilePage" />
+        <activity android:name="com.psu.LionConnect.ProfilePage" />
+        <activity android:name=".CreateProfileActivity" />
         <activity android:name=".postActivity" />
         <activity
             android:name=".bottomNavActivity"

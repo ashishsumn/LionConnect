@@ -14,15 +14,16 @@
 
 
         <ImageView
+
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="48dp"
             android:layout_marginBottom="16dp"
             android:background="@color/colorPrimary"
+            android:cropToPadding="false"
+            android:onClick="handleImageClick"
             android:textColor="#ffffff"
-            app:layout_constraintDimensionRatio="w,1:1"
-
             app:srcCompat="@drawable/ic_person_outline_black_24dp" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -134,6 +135,17 @@
             android:background="@color/colorPrimary"
             android:textColor="#ffffff"
             android:onClick="returnToProfile"
+            android:text="Return"/>
+
+        <Button
+            android:id="@+id/change_profile_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="end"
+            android:background="@color/colorPrimary"
+            android:textColor="#ffffff"
+            android:onClick="changeProfile"
             android:text="Return"/>
 
     </LinearLayout>

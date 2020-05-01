@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ui.notifications.EditProfile"></activity>
         <activity android:name=".ui.notifications.ProfilePage" />
-        <activity android:name="com.psu.LionConnect.ProfilePage" />
+
         <activity android:name=".CreateProfileActivity" />
         <activity android:name=".postActivity" />
         <activity

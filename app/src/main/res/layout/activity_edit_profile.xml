@@ -15,6 +15,7 @@ tools:context="edu.psu.lionconnect.ui.notifications.EditProfile">
 
 
     <ImageView
+        android:id="@+id/edit_profile_image_view"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_gravity="center_horizontal"
@@ -23,8 +24,7 @@ tools:context="edu.psu.lionconnect.ui.notifications.EditProfile">
         android:background="@color/colorPrimary"
         android:textColor="#ffffff"
         app:layout_constraintDimensionRatio="w,1:1"
-
-        app:srcCompat="@drawable/ic_person_outline_black_24dp" />
+     />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_name_text_input"
@@ -120,27 +120,50 @@ tools:context="edu.psu.lionconnect.ui.notifications.EditProfile">
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/edit_save_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_gravity="end"
-        android:background="@color/colorPrimary"
-        android:textColor="#ffffff"
-        android:onClick="saveEditPofile"
-        android:text="save"/>
 
-    <Button
-        android:id="@+id/edit_return_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_gravity="end"
-        android:background="@color/colorPrimary"
-        android:textColor="#ffffff"
-        android:onClick="returnToProfile"
-        android:text="Return"/>
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/edit_save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="end"
+            android:background="@color/colorPrimary"
+            android:textColor="#ffffff"
+            android:onClick="saveEditPofile"
+            android:text="save"/>
+
+        <Button
+            android:id="@+id/edit_return_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="end"
+            android:background="@color/colorPrimary"
+            android:textColor="#ffffff"
+            android:onClick="returnToProfile"
+            android:text="Return"/>
+
+        <Button
+            android:id="@+id/change_profile_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="end"
+            android:background="@color/colorPrimary"
+            android:textColor="#ffffff"
+            android:onClick="returnToProfile"
+            android:text="Change Picture"/>
+    </LinearLayout>
 
 </LinearLayout>
 </ScrollView>

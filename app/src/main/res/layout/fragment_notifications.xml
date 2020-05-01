@@ -25,6 +25,7 @@
             android:textColor="#ffffff" />
 
         <ImageView
+            android:id="@+id/profile_page_image"
             android:layout_width="100dp"
             android:layout_height="80dp"
             android:layout_gravity="left"
@@ -33,8 +34,7 @@
             android:background="@color/colorPrimary"
             android:textColor="#ffffff"
             app:layout_constraintDimensionRatio="w,1:1"
-
-            app:srcCompat="@drawable/ic_person_outline_black_24dp" />
+            />
 
 
         <TextView

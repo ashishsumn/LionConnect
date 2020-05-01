@@ -34,6 +34,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -86,22 +87,26 @@ public class postActivity extends AppCompatActivity {
             justAnInstance.setImagePath(data.getData());
             justAnInstance.setDescription(et.getText().toString());
             justAnInstance.setUser(user);
-        }else{
-//            Code for reselection prompt
-            int a ;
         }
     }
 
     private Bitmap getPath(Uri image){
-        Bitmap bitmap = null;
+        float imageViewHeight = (float) this.im.getHeight();
+        float width = (float) ((View) this.im.getParent()).getWidth();
         try {
-            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image);
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), image);
+            float scaler = imageViewHeight / ((float) bitmap.getHeight());
+            if (scaler < 1.0f) {
+                return Bitmap.createScaledBitmap(bitmap, (int) (((float) bitmap.getWidth()) * scaler), (int) (((float) bitmap.getHeight()) * scaler), true);
+            }
+            return bitmap;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        return bitmap;
+        return null;
     }
 
     public void cancelClick(View view) {
@@ -113,7 +118,11 @@ public class postActivity extends AppCompatActivity {
     }
 
     public void postClick(View view) {
-        justAnInstance.setUser(user);
+        if (postDataModel.getImagePath() == null) {
+            Toast.makeText(getApplicationContext(), "Please select an image to post", Toast.LENGTH_SHORT).show();
+            return;
+        }
+//        justAnInstance.setUser(user);
         final String temp = justAnInstance.getUser();
         Uri file = justAnInstance.getImagePath();
         FirebaseApp.initializeApp(getApplicationContext());
@@ -148,15 +157,17 @@ public class postActivity extends AppCompatActivity {
                     findViewById(R.id.button_post).setVisibility(View.GONE);
                     findViewById(R.id.progress_circular).setVisibility(View.GONE);
                     findViewById(R.id.button_done).setVisibility(View.VISIBLE);
-
+                    FieldValue serverTimestamp = FieldValue.serverTimestamp();
                     HashMap<String, Object> postHash = new HashMap<>();
                     HashMap<String, Object> childUpdates = new HashMap<>();
                     postHash.put("photos", photoId);
                     postHash.put("description",justAnInstance.getDescription());
-                    postHash.put("timestamp", ServerValue.TIMESTAMP);
+                    postHash.put("timestamp", serverTimestamp);
+                    postHash.put("userId", user);
+                    postHash.put("user", FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
 
                     Map<String,Object> postUserHash = new HashMap<>();
-                    postUserHash.put("posts."+postId, true);
+                    postUserHash.put("posts."+postId, serverTimestamp);
 
                     fsInstance.collection("posts").document(postId).set(postHash);
                     fsInstance.collection("users").document(user).update(postUserHash);

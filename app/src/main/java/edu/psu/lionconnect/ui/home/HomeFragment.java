@@ -1,128 +1,105 @@
 package edu.psu.lionconnect.ui.home;
 
-import android.os.AsyncTask;
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
 import com.google.firebase.storage.FirebaseStorage;
-
-import org.w3c.dom.Document;
-
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.Iterator;
 
 import edu.psu.lionconnect.R;
 
+/* renamed from: edu.psu.lionconnect.ui.home.HomeFragment */
 public class HomeFragment extends Fragment {
-
-    private HomeViewModel homeViewModel;
-    String tempUsername = "testUser1";
+    /* access modifiers changed from: private */
+    public HomeViewModel homeViewModel;
     Parcelable mListState;
+    String tempUsername = "testUser1";
 
-
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-
-        final TextView textView = root.findViewById(R.id.text_home);
-
-        homeViewModel = new HomeViewModel(root, getActivity());
-
-        homeViewModel.makeFeed();
-
-//        getData();
-
+        TextView textView = (TextView) root.findViewById(R.id.text_home);
+        this.homeViewModel = new HomeViewModel(root, getActivity());
+        getData();
         return root;
     }
 
-//    private class feedDataGet extends AsyncTask<String, Void, feedDataStructure[]>{
-//
-//        homeViewModel.makeFeed();
-//
-//        @Override
-//        protected feedDataStructure[] doInBackground(String... strings) {
-//            return new feedDataStructure[0];
-//        }
-//        return root;
-//    }
-
-//    private class fillFeed extends AsyncTask<,Void,Void>{
-//
-//        @Override
-//        protected Object doInBackground(Object[] objects) {
-//            return null;
-//        }
-//    }
-
-//    public void getData(){
-//        FirebaseFirestore fsInstance = FirebaseFirestore.getInstance();
-//        FirebaseStorage fbsInstance = FirebaseStorage.getInstance();
-//        final ArrayList<String> friendList = new ArrayList<>();
-//        DocumentReference friends = fsInstance.collection("friends")
-//                                                .document(FirebaseAuth.getInstance()
-//                                                        .getCurrentUser().getUid());
-//
-//        friends.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//            @Override
-//            public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                Map<String, Object> a = documentSnapshot.getData();
-//
-//                for(String friend: a.keySet()){
-//                    friendList.add(friend);
-//                }
-//                new feedDataGet().execute();
-//            }
-//        });
-//
-//    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mListState = homeViewModel.llm.onSaveInstanceState();
-        outState.putParcelable("list", mListState);
+    public void getData() {
+        FirebaseFirestore instance = FirebaseFirestore.getInstance();
+        FirebaseStorage instance2 = FirebaseStorage.getInstance();
+        String currUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        HashMap<String, String> user = new HashMap<>();
+        user.put("user", currUser);
+        FirebaseFunctions.getInstance().getHttpsCallable("getPostInfo").
+                call(user).addOnSuccessListener((Activity) getActivity(), new OnSuccessListener<HttpsCallableResult>() {
+            public void onSuccess(HttpsCallableResult httpsCallableResult) {
+                if (httpsCallableResult.getData() != null) {
+                    PrintStream printStream = System.out;
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(httpsCallableResult.getData());
+                    sb.append(" ");
+                    sb.append(httpsCallableResult.getData().getClass());
+                    printStream.println(sb.toString());
+                    JsonArray feedValueArray = ((JsonObject) new JsonParser().parse(httpsCallableResult.getData().toString())).getAsJsonArray("data");
+                    ArrayList<feedDataStructure> returnList = new ArrayList<>();
+                    Iterator it = feedValueArray.iterator();
+                    while (it.hasNext()) {
+                        JsonObject postInfo = (JsonObject) it.next();
+                        returnList.add(new feedDataStructure(postInfo.get("photos").getAsString()
+                                , postInfo.get("description").getAsString()
+                                , postInfo.get("user").getAsString()
+                                , postInfo.get("userId").getAsString()
+                                , postInfo.get("timestamp").getAsString()));
+                    }
+                    Log.i("Inside not null successListener", "In success");
+                    HomeFragment.this.homeViewModel.makeFeed(returnList);
+                    return;
+                }
+                Log.i("Inside null successListener", "No data recieved");
+            }
+        }).addOnFailureListener((Activity) getActivity(), (OnFailureListener) new OnFailureListener() {
+            public void onFailure(Exception e) {
+                Log.e("In failure error", e.toString());
+            }
+        });
     }
 
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Parcelable onSaveInstanceState = this.homeViewModel.llm.onSaveInstanceState();
+        this.mListState = onSaveInstanceState;
+        outState.putParcelable("list", onSaveInstanceState);
+    }
 
-        if(savedInstanceState != null){
-            mListState = savedInstanceState.getParcelable("list");
-            homeViewModel.llm.onRestoreInstanceState(mListState);
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            this.mListState = savedInstanceState.getParcelable("list");
+            this.homeViewModel.llm.onRestoreInstanceState(this.mListState);
         }
     }
 
-    @Override
-
     public void onResume() {
         super.onResume();
-        if (mListState != null) {
-            homeViewModel.llm.onRestoreInstanceState(mListState);
+        if (this.mListState != null) {
+            this.homeViewModel.llm.onRestoreInstanceState(this.mListState);
         }
     }
 }

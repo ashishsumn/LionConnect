@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -81,25 +84,29 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    public void onSaveInstanceState(Bundle outState) {
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Parcelable onSaveInstanceState = this.homeViewModel.llm.onSaveInstanceState();
-        this.mListState = onSaveInstanceState;
-        outState.putParcelable("list", onSaveInstanceState);
+        mListState = homeViewModel.llm.onSaveInstanceState();
+        outState.putParcelable("list", mListState);
     }
 
-    public void onViewStateRestored(Bundle savedInstanceState) {
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        if (savedInstanceState != null) {
-            this.mListState = savedInstanceState.getParcelable("list");
-            this.homeViewModel.llm.onRestoreInstanceState(this.mListState);
+
+        if(savedInstanceState != null){
+            mListState = savedInstanceState.getParcelable("list");
+            homeViewModel.llm.onRestoreInstanceState(mListState);
         }
     }
 
+    @Override
+
     public void onResume() {
         super.onResume();
-        if (this.mListState != null) {
-            this.homeViewModel.llm.onRestoreInstanceState(this.mListState);
+        if (mListState != null) {
+            homeViewModel.llm.onRestoreInstanceState(mListState);
         }
     }
 }

@@ -52,5 +52,7 @@ public class postDataModel {
         return instance.user;
     }
 
+    public static void clearInstance(){ instance = null; }
+
 
 }

@@ -10,6 +10,8 @@
     <string name="login">Login</string>
     <string name="new_user">New User</string>
     <string name="forgot_pwd">Forgot Password</string>
+    <string name="follow">Follow</string>
+    <string name="view_profile">View Profile</string>
 
     <!-- Registration Page -->
 

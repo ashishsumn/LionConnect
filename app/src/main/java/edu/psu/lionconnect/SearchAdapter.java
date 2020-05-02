@@ -1,6 +1,5 @@
 package edu.psu.lionconnect;
 
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,18 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
-import java.util.ArrayList;
-
-import edu.psu.lionconnect.ui.home.feedDataStructure;
+import java.util.Map;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
 
     private static final String TAG = "CustomAdapter";
-    private ArrayList<String[]> mDataset;
+    private Map<String,String> mDataset;
 
     // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
         private final TextView emailView;
@@ -43,17 +38,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public SearchAdapter(ArrayList<String[]> myDataset) {
+    public SearchAdapter(Map<String,String> myDataset) {
         mDataset = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        TextView v = (TextView) LayoutInflater.from(parent.getContext())
-//                .inflate(R.layout.listview_feed, parent, false);
-//        SearchViewHolder vh = new SearchViewHolder(v);
-//        return vh;
 
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -62,24 +53,21 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         View v = inflater.inflate(R.layout.listview_feed, parent, false);
 
         // Return a new holder instance
-//        SearchAdapter.ListViewHolder viewHolder = new SearchAdapter.ListViewHolder(listview);
         return new ViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // Get the data model based on position
-        String[] listItem = mDataset.get(position);
-
         // Set item views based on your views and data model
-        (holder.textView).setText(listItem[0]);
-        (holder.emailView).setText(listItem[1]);
+        //"UserName", "about_me", "campus", "degree", "email", "friends", "major", "name", "posts"
+        (holder.textView).setText(mDataset.get("UserName"));
+        (holder.emailView).setText(mDataset.get("email"));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return 1;
     }
 }

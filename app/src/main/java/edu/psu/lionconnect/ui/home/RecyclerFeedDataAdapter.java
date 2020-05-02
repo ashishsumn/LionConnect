@@ -28,6 +28,7 @@ import edu.psu.lionconnect.R;
 public class RecyclerFeedDataAdapter extends RecyclerView.Adapter<RecyclerFeedDataAdapter.CardViewHolder>{
 
     private Context context;
+
     private List<feedDataStructure> partFeed;
 
     public class CardViewHolder extends RecyclerView.ViewHolder {

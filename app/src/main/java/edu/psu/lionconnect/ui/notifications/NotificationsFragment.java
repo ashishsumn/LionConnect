@@ -2,12 +2,16 @@ package edu.psu.lionconnect.ui.notifications;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -15,17 +19,78 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
+import java.util.concurrent.Executor;
+
 import edu.psu.lionconnect.R;
 
 public class NotificationsFragment extends Fragment {
 
     private NotificationsViewModel notificationsViewModel;
     private Button button;
+    private FirebaseStorage fbsInstance;
+    private FirebaseFirestore fStore;
+    private FirebaseAuth fAuth;
+    private FirebaseUser mCurrentUser;
+    private DatabaseReference mDatabaseUser;
+    private ImageView profileImage;
+    private StorageReference storageReference;
+    private TextView main_fullname, main_campus, main_city, main_about_me, main_degree, main_major;
+
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        fAuth = FirebaseAuth.getInstance();
+        mCurrentUser = fAuth.getCurrentUser();
+        fStore = FirebaseFirestore.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
+
+
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+        main_fullname =(TextView) root.findViewById(R.id.tv_profile_name);
+        main_campus = (TextView) root.findViewById(R.id.tv_profile_campus);
+        main_city = (TextView) root.findViewById(R.id.tv_profile_city);
+        main_about_me = (TextView) root.findViewById(R.id.tv_profile_bio);
+        main_degree = (TextView) root.findViewById(R.id.tv_profile_degree);
+        main_major = (TextView) root.findViewById(R.id.tv_profile_major);
+
+        DocumentReference documentReference = fStore.collection("users").document(mCurrentUser.getUid());
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+//                    String name = documentSnapshot.getString("name");
+                    main_fullname.setText(documentSnapshot.getString("name"));
+                    main_campus.setText(documentSnapshot.getString("campus"));
+                    main_city.setText(documentSnapshot.getString("city"));
+                    main_about_me.setText(documentSnapshot.getString("about_me"));
+                    main_degree.setText(documentSnapshot.getString("degree"));
+                    main_major.setText(documentSnapshot.getString("major"));
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
 
         button = (Button) root.findViewById(R.id.profile_edit_button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -36,12 +101,52 @@ public class NotificationsFragment extends Fragment {
 
             private void profileEditClick(View v) {
                 Intent intent;
+                   //                intent.putExtra("name",)
                 intent = new Intent(v.getContext(), EditProfile.class);
+
+                //pass the data to Edit Profile to show already existing data
+                intent.putExtra("name",main_fullname.getText().toString());
+                intent.putExtra("campus", main_campus.getText().toString());
+                intent.putExtra("city",main_city.getText().toString());
+                intent.putExtra("about_me",main_about_me.getText().toString());
+                intent.putExtra("degree",main_degree.getText().toString());
+                intent.putExtra("major",main_major.getText().toString());
+//                intent.putExtra("name","Pritam Bhaladhare");
+//                intent.putExtra("campus", "Harrisburg");
+//                intent.putExtra("city","Middletown");
+//                intent.putExtra("about_me","Your LionConnect gram bio as all about making the first impression on your self. Where as most of the people just copy your bio and photos wether or not they follow you. As we collected many bio, here you have an index for you to skip to a certain idea you are looking for.");
+//                intent.putExtra("degree","Masters");
+//                intent.putExtra("major","Computer Science");
                 startActivity(intent);
             }
         });
 
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+        profileImage = root.findViewById(R.id.profile_page_image);
+        storageReference = FirebaseStorage.getInstance().getReference();
 
+        StorageReference profileRef = storageReference.child("users"+fAuth.getCurrentUser().getUid()+"profile.jpg");
+
+
+
+        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(profileImage);
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+        // useless code
         final TextView textView = root.findViewById(R.id.tv_profile_email);
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -50,12 +155,7 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
-
-
-
-
-
-
+        // end of useless code
         return root;
     }
 

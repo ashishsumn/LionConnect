@@ -10,30 +10,46 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import edu.psu.lionconnect.R;
 import io.grpc.Context;
 
 public class EditProfile extends AppCompatActivity {
+    private static final String TAG = "TAG";
     int TAKE_IMAGE_CODE = 10001;
     ImageView profileImage;
     Button changeProfileImage;
+    Button saveBtn;
     StorageReference storageReference;
     private FirebaseAuth fAuth;
     private FirebaseFirestore fStore;
+    private FirebaseUser user;
+    EditText profile_fullname;
+    EditText profile_campus;
+    EditText profile_city;
+    EditText profile_about_me;
+    EditText profile_degree;
+    EditText profile_major;
 
 
     @Override
@@ -42,11 +58,33 @@ public class EditProfile extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
 
         fAuth = FirebaseAuth.getInstance();
+        user = fAuth.getCurrentUser();
         fStore = FirebaseFirestore.getInstance();
         profileImage = findViewById(R.id.edit_profile_image_view);
         changeProfileImage = findViewById(R.id.change_profile_button);
+        saveBtn = findViewById(R.id.edit_save_button);
         storageReference = FirebaseStorage.getInstance().getReference();
 
+        Intent data = getIntent();
+
+        String fullname = data.getStringExtra("name");
+        String campus = data.getStringExtra("campus");
+        String city = data.getStringExtra("city");
+        String about_me = data.getStringExtra("about_me");
+        String degree = data.getStringExtra("degree");
+        String major = data.getStringExtra("major");
+
+        profile_fullname= findViewById(R.id.et_name_edit_text);
+        profile_campus= findViewById(R.id.et_campus_edit_text);
+        profile_city= findViewById(R.id.et_city_edit_text);
+        profile_about_me= findViewById(R.id.et_bio_edit_text);
+        profile_degree= findViewById(R.id.et_degree_edit_text);
+        profile_major= findViewById(R.id.et_major_edit_text);
+
+
+
+
+        Log.d(TAG, "onCreate: "+ fullname + " " + campus + " " + city  + " " + about_me + " " + degree + " " + major);
         StorageReference profileRef = storageReference.child("users"+fAuth.getCurrentUser().getUid()+"profile.jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -55,7 +93,44 @@ public class EditProfile extends AppCompatActivity {
             }
         });
 
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(profile_fullname.getText().toString().isEmpty() ||
+                        profile_campus.getText().toString().isEmpty() ||
+                        profile_city.getText().toString().isEmpty() ||
+                        profile_about_me.getText().toString().isEmpty() ||
+                        profile_degree.getText().toString().isEmpty() ||
+                        profile_major.getText().toString().isEmpty()){
+                    Toast.makeText(EditProfile.this, "One or many fields are empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
+                DocumentReference docRef = fStore.collection("users").document(user.getUid());
+                Map<String, Object> edited = new HashMap<>();
+                edited.put("name", profile_fullname.getText().toString());
+                edited.put("campus", profile_campus.getText().toString());
+                edited.put("about_me", profile_about_me.getText().toString());
+                edited.put("degree", profile_degree.getText().toString());
+                edited.put("major", profile_major.getText().toString());
+                docRef.update(edited).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(EditProfile.this, "Profile is updated on DB", Toast.LENGTH_SHORT).show();
+                        //send user back to profile
+                        startActivity(new Intent(getApplicationContext(), NotificationsFragment.class));
+                    }
+                });
+
+            }
+        });
+
+        profile_fullname.setText(fullname);
+        profile_campus.setText(campus);
+        profile_city.setText(city);
+        profile_about_me.setText(about_me);
+        profile_degree.setText(degree);
+        profile_major.setText(major);
 
         changeProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override

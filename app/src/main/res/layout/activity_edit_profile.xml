@@ -16,15 +16,14 @@ tools:context="edu.psu.lionconnect.ui.notifications.EditProfile">
 
     <ImageView
         android:id="@+id/edit_profile_image_view"
-        android:layout_width="64dp"
+        android:layout_width="68dp"
         android:layout_height="64dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="48dp"
         android:layout_marginBottom="16dp"
         android:background="@color/colorPrimary"
         android:textColor="#ffffff"
-        app:layout_constraintDimensionRatio="w,1:1"
-     />
+        app:layout_constraintDimensionRatio="w,1:1" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_name_text_input"
@@ -42,14 +41,14 @@ tools:context="edu.psu.lionconnect.ui.notifications.EditProfile">
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/et_address_text_input"
+        android:id="@+id/et_campus_text_input"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_address_edit_text"
+            android:id="@+id/et_campus_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Campus"/>

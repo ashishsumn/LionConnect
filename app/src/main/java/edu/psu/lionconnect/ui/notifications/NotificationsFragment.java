@@ -111,14 +111,6 @@ public class NotificationsFragment extends Fragment {
                 intent.putExtra("about_me",main_about_me.getText().toString());
                 intent.putExtra("degree",main_degree.getText().toString());
                 intent.putExtra("major",main_major.getText().toString());
-//                intent.putExtra("name","Pritam Bhaladhare");
-//                intent.putExtra("campus", "Harrisburg");
-//                intent.putExtra("city","Middletown");
-//                intent.putExtra("about_me","Your LionConnect gram bio as all about making the first impression on your self.
-//                Where as most of the people just copy your bio and photos wether or not they follow you. As we collected many bio,
-//                here you have an index for you to skip to a certain idea you are looking for.");
-//                intent.putExtra("degree","Masters");
-//                intent.putExtra("major","Computer Science");
                 startActivity(intent);
             }
         });
@@ -129,35 +121,12 @@ public class NotificationsFragment extends Fragment {
         storageReference = FirebaseStorage.getInstance().getReference();
 
         StorageReference profileRef = storageReference.child("users"+fAuth.getCurrentUser().getUid()+"profile.jpg");
-
-
-
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).into(profileImage);
             }
         });
-
-
-
-
-
-
-
-
-
-
-        // useless code
-//        final TextView textView = root.findViewById(R.id.tv_profile_email);
-//        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
-
-        // end of useless code
         return root;
     }
 

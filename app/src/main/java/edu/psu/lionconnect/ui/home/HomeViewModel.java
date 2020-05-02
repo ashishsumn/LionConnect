@@ -8,37 +8,57 @@ import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+
 import java.util.ArrayList;
 
 import edu.psu.lionconnect.R;
 
 public class HomeViewModel extends ViewModel {
 
+    public Context context;
+    final String currUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    final FirebaseStorage fbsInstance = FirebaseStorage.getInstance();
+    public LinearLayoutManager llm;
     private MutableLiveData<String> mText;
     public RecyclerView recList;
-    public LinearLayoutManager llm;
     public View root;
-    public Context context;
 
     public HomeViewModel(View view, Context context) {
         this.root = view;
         this.context = context;
-        this.recList = (RecyclerView) root.findViewById(R.id.recyclerview_feed);
+        this.recList = (RecyclerView) view.findViewById(R.id.recyclerview_feed);
         this.llm = new LinearLayoutManager(context);
+        makeRecInVis();
     }
 
-    public void makeFeed(){
-        recList.setHasFixedSize(true);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recList.setLayoutManager(llm);
-
-        ArrayList data = new ArrayList<feedDataStructure>();
-
-        for(int i =0;i<10;i++){
-            data.add(new feedDataStructure(R.drawable.image1_background, "----------","----------"));
+    public void makeFeed(ArrayList<feedDataStructure> data) {
+        this.recList.setHasFixedSize(true);
+        this.llm.setOrientation(RecyclerView.VERTICAL);
+        this.recList.setLayoutManager(this.llm);
+        for (int i = 0; i < data.size(); i++) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(((feedDataStructure) data.get(i)).getUser());
+            String str = " ";
+            sb.append(str);
+            sb.append(((feedDataStructure) data.get(i)).getTimeStamp());
+            sb.append(str);
+            sb.append(((feedDataStructure) data.get(i)).getPhotoPath());
         }
-
-        RecyclerFeedDataAdapter adapter = new RecyclerFeedDataAdapter((data));
-        recList.setAdapter(adapter);
+        makeRecVis();
+        this.recList.setAdapter(new RecyclerFeedDataAdapter(data));
     }
+
+    public void makeRecInVis() {
+        this.recList.setVisibility(View.GONE);
+        this.root.findViewById(R.id.progress_circular_home).setVisibility(View.VISIBLE);
+    }
+
+    public void makeRecVis() {
+        this.recList.setVisibility(View.VISIBLE);
+        this.root.findViewById(R.id.progress_circular_home).setVisibility(View.GONE);
+    }
+
+
 }

@@ -21,5 +21,6 @@
         android:id="@+id/navigation_profile"
         android:name="edu.psu.lionconnect.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/activity_profile_page" />
+
 </navigation>

@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".SearchActivity">
             <meta-data
                 android:name="android.app.default_searchable"
@@ -31,6 +32,10 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+
+        <activity android:name=".ui.notifications.EditProfile"></activity>
+        <activity android:name=".ui.notifications.ProfilePage" />
+
         <activity
             android:name=".bottomNavActivity"
             android:label="@string/title_activity_bottom_nav">

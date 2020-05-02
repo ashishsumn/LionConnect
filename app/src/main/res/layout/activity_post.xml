@@ -28,35 +28,34 @@
         android:layout_width="0dp"
         android:layout_height="32dp"
         android:layout_margin="8dp"
-
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/button_post"
-        app:layout_constraintStart_toStartOf="parent"
-
+        android:layout_marginBottom="40dp"
         android:background="@color/colorPrimary"
-        android:textColor="#ffff"
+        android:onClick="cancelClick"
+
         android:text="Cancel"
         android:textAlignment="center"
+        android:textColor="#ffff"
+        app:layout_constraintBottom_toBottomOf="parent"
 
-        android:onClick="cancelClick"
-        />
+        app:layout_constraintEnd_toStartOf="@id/button_post"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
-        android:id = "@+id/button_post"
+        android:id="@+id/button_post"
         android:layout_width="0dp"
         android:layout_height="32dp"
         android:layout_margin="8dp"
 
+        android:layout_marginBottom="40dp"
+        android:background="@color/colorPrimary"
+        android:onClick="postClick"
+
+        android:text="Post"
+        android:textAlignment="center"
+        android:textColor="#ffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/button_cancel"
-
-        android:textColor="#ffff"
-        android:text="Post"
-        android:background="@color/colorPrimary"
-        android:textAlignment="center"
-        android:onClick="postClick"
-        />
+        app:layout_constraintStart_toEndOf="@id/button_cancel" />
 
     <ProgressBar
         android:id="@+id/progress_circular"

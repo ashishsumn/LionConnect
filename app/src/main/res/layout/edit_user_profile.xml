@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:clipToPadding="false"
+        android:orientation="vertical">
+
+
+        <ImageView
+
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/colorPrimary"
+            android:cropToPadding="false"
+            android:onClick="handleImageClick"
+            android:textColor="#ffffff"
+            app:srcCompat="@drawable/ic_person_outline_black_24dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_name_text_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_name_edit_text"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_address_text_input"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_address_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Campus"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_city_text_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_city_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="City"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_bio_text_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_bio_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="About Me"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_degree_text_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_degree_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Degree"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_major_text_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_major_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Major"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/edit_save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="end"
+            android:background="@color/colorPrimary"
+            android:textColor="#ffffff"
+            android:onClick="saveEditPofile"
+            android:text="save"/>
+
+        <Button
+            android:id="@+id/edit_return_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="end"
+            android:background="@color/colorPrimary"
+            android:textColor="#ffffff"
+            android:onClick="returnToProfile"
+            android:text="Return"/>
+
+        <Button
+            android:id="@+id/change_profile_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="end"
+            android:background="@color/colorPrimary"
+            android:textColor="#ffffff"
+            android:onClick="changeProfile"
+            android:text="Return"/>
+
+    </LinearLayout>
+</ScrollView>

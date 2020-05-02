@@ -15,13 +15,14 @@ import edu.psu.lionconnect.ui.home.feedDataStructure;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
 
     private static final String TAG = "CustomAdapter";
-    private ArrayList<String> mDataset;
+    private ArrayList<String[]> mDataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
+        private final TextView emailView;
 
         public ViewHolder(View v) {
             super(v);
@@ -33,6 +34,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 }
             });
             textView = (TextView) v.findViewById(R.id.feedText);
+            emailView = (TextView) v.findViewById(R.id.feedEmailText);
         }
 
         public TextView getTextView() {
@@ -41,7 +43,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public SearchAdapter(ArrayList<String> myDataset) {
+    public SearchAdapter(ArrayList<String[]> myDataset) {
         mDataset = myDataset;
     }
 
@@ -68,10 +70,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // Get the data model based on position
-        String listItem = mDataset.get(position);
+        String[] listItem = mDataset.get(position);
 
         // Set item views based on your views and data model
-        (holder.textView).setText(listItem);
+        (holder.textView).setText(listItem[0]);
+        (holder.emailView).setText(listItem[1]);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

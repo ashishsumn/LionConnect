@@ -183,6 +183,7 @@ public class EditProfile extends AppCompatActivity {
     }
 
     public void returnToProfile(View view) {
+        startActivity(new Intent(getApplicationContext(), NotificationsFragment.class));
     }
 
     public void saveEditPofile(View view) {

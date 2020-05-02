@@ -114,7 +114,9 @@ public class NotificationsFragment extends Fragment {
 //                intent.putExtra("name","Pritam Bhaladhare");
 //                intent.putExtra("campus", "Harrisburg");
 //                intent.putExtra("city","Middletown");
-//                intent.putExtra("about_me","Your LionConnect gram bio as all about making the first impression on your self. Where as most of the people just copy your bio and photos wether or not they follow you. As we collected many bio, here you have an index for you to skip to a certain idea you are looking for.");
+//                intent.putExtra("about_me","Your LionConnect gram bio as all about making the first impression on your self.
+//                Where as most of the people just copy your bio and photos wether or not they follow you. As we collected many bio,
+//                here you have an index for you to skip to a certain idea you are looking for.");
 //                intent.putExtra("degree","Masters");
 //                intent.putExtra("major","Computer Science");
                 startActivity(intent);
@@ -147,13 +149,13 @@ public class NotificationsFragment extends Fragment {
 
 
         // useless code
-        final TextView textView = root.findViewById(R.id.tv_profile_email);
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+//        final TextView textView = root.findViewById(R.id.tv_profile_email);
+//        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//                textView.setText(s);
+//            }
+//        });
 
         // end of useless code
         return root;

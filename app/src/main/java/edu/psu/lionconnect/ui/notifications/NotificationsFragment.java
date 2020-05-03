@@ -37,12 +37,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.concurrent.Executor;
 
+import edu.psu.lionconnect.MainActivity;
 import edu.psu.lionconnect.R;
 
 public class NotificationsFragment extends Fragment {
 
     private NotificationsViewModel notificationsViewModel;
-    private Button button;
+    private Button button, logout;
     private FirebaseStorage fbsInstance;
     private FirebaseFirestore fStore;
     private FirebaseAuth fAuth;
@@ -92,6 +93,9 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
+
+
+
         button = (Button) root.findViewById(R.id.profile_edit_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +131,23 @@ public class NotificationsFragment extends Fragment {
                 Picasso.get().load(uri).into(profileImage);
             }
         });
+
+        logout = (Button) root.findViewById(R.id.profile_logout_button);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                profileLogout(v);
+            }
+
+            private void profileLogout(View v){
+                fAuth.getInstance().signOut();
+                getActivity().finish();
+                startActivity(new Intent(getActivity(), MainActivity.class));
+
+            }
+        });
+
+
         return root;
     }
 

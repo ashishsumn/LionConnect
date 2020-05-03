@@ -99,6 +99,7 @@ public class EditProfile extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("TAG","Save button clicked -- OnCLickLisr");
                 if(profile_fullname.getText().toString().isEmpty() ||
                         profile_campus.getText().toString().isEmpty() ||
                         profile_city.getText().toString().isEmpty() ||
@@ -111,18 +112,28 @@ public class EditProfile extends AppCompatActivity {
 
                 DocumentReference docRef = fStore.collection("users").document(user.getUid());
                 Map<String, Object> edited = new HashMap<>();
+                Log.d("TAG","Mapcreate -- OnCLickLisr");
                 edited.put("name", profile_fullname.getText().toString());
                 edited.put("city", profile_city.getText().toString());
                 edited.put("campus", profile_campus.getText().toString());
                 edited.put("about_me", profile_about_me.getText().toString());
                 edited.put("degree", profile_degree.getText().toString());
                 edited.put("major", profile_major.getText().toString());
-                docRef.update(edited).addOnSuccessListener(new OnSuccessListener<Void>() {
+                docRef.set(edited).addOnSuccessListener(new OnSuccessListener<Void>() {
+
                     @Override
                     public void onSuccess(Void aVoid) {
+                        Log.d("TAG","Go back to profile-- OnCLickLisr");
                         Toast.makeText(EditProfile.this, "Profile is updated on DB", Toast.LENGTH_SHORT).show();
                         //send user back to profile
                         startActivity(new Intent(getApplicationContext(), NotificationsFragment.class));
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("TAG", e.toString());
+                        Toast.makeText(EditProfile.this, "Failed", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -194,6 +205,7 @@ public class EditProfile extends AppCompatActivity {
     }
 
     public void saveEditPofile(View view) {
+        Log.d("TAG","Save button clicked -- saveEditProfile");
     }
 
 

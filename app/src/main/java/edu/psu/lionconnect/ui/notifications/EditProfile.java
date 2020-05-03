@@ -3,6 +3,9 @@ package edu.psu.lionconnect.ui.notifications;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -109,6 +112,7 @@ public class EditProfile extends AppCompatActivity {
                 DocumentReference docRef = fStore.collection("users").document(user.getUid());
                 Map<String, Object> edited = new HashMap<>();
                 edited.put("name", profile_fullname.getText().toString());
+                edited.put("city", profile_city.getText().toString());
                 edited.put("campus", profile_campus.getText().toString());
                 edited.put("about_me", profile_about_me.getText().toString());
                 edited.put("degree", profile_degree.getText().toString());
@@ -183,7 +187,10 @@ public class EditProfile extends AppCompatActivity {
     }
 
     public void returnToProfile(View view) {
-        startActivity(new Intent(getApplicationContext(), NotificationsFragment.class));
+        Fragment fragment =new NotificationsFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment).commit();
+//        startActivity(new Intent(getApplicationContext(), NotificationsFragment.class));
     }
 
     public void saveEditPofile(View view) {

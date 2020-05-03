@@ -52,6 +52,7 @@ public class postActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+        justAnInstance = postDataModel.getInstance();
         im = findViewById(R.id.image_post);
         im.setImageResource(R.drawable.image1_background);
         et = findViewById(R.id.text_post);
@@ -101,8 +102,7 @@ public class postActivity extends AppCompatActivity {
     }
 
     public void cancelClick(View view) {
-        justAnInstance.setDescription(null);
-        justAnInstance.setImagePath(null);
+        justAnInstance.clearInstance();
         Intent intent = new Intent(this, bottomNavActivity.class);
         startActivity(intent);
         finish();
@@ -171,7 +171,7 @@ public class postActivity extends AppCompatActivity {
                     findViewById(R.id.button_post).setVisibility(View.VISIBLE);
                     findViewById(R.id.progress_circular).setVisibility(View.GONE);
                 }
-                justAnInstance.clearInstance();
+
             }
         }).addOnFailureListener(this, new OnFailureListener() {
             @Override

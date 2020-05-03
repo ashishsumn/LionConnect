@@ -101,8 +101,7 @@ public class postActivity extends AppCompatActivity {
     }
 
     public void cancelClick(View view) {
-        justAnInstance.setDescription(null);
-        justAnInstance.setImagePath(null);
+        justAnInstance.clearInstance();
         Intent intent = new Intent(this, bottomNavActivity.class);
         startActivity(intent);
         finish();
@@ -171,7 +170,7 @@ public class postActivity extends AppCompatActivity {
                     findViewById(R.id.button_post).setVisibility(View.VISIBLE);
                     findViewById(R.id.progress_circular).setVisibility(View.GONE);
                 }
-                justAnInstance.clearInstance();
+
             }
         }).addOnFailureListener(this, new OnFailureListener() {
             @Override

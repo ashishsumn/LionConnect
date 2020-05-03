@@ -47,6 +47,7 @@ public class HomeViewModel extends ViewModel {
         if(data.size() < 10){
             done = true;
             adapter.setDone(done);
+            data.add(new feedDataStructure());
         }
         adapter.removeLoaderFromList(done);
         adapter.addDataToList(data);

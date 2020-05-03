@@ -57,6 +57,7 @@ public class CreateProfileActivity extends AppCompatActivity {
     public void createUserInFirebase(String name, String email, String uid, Uri photo) {
         Map<String, Object> createUserhash = new HashMap<>();
         Map<String, Object> createFriendshash = new HashMap<>();
+        Map<String, Object> createPostsshash = new HashMap<>();
         String userId = uid;
 
         Map<String, Object> createPostHash = new HashMap<>();

@@ -91,8 +91,8 @@ public class RecyclerFeedDataAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void removeLoaderFromList(boolean status){
         if(status && getItemCount() != 0){
             done = status;
-            partFeed.remove(getItemCount());
-            notifyItemRemoved(getItemCount());
+            partFeed.remove(getItemCount() - 1);
+            notifyItemRemoved(getItemCount() - 1);
         }
     }
 
@@ -139,7 +139,13 @@ public class RecyclerFeedDataAdapter extends RecyclerView.Adapter<RecyclerView.V
             ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             final int height = displayMetrics.heightPixels;
             final int width = displayMetrics.widthPixels;
-            ((CardViewHolder)viewHolder).text.setText(listItem.getText().toString());
+            try{
+                ((CardViewHolder)viewHolder).text.setText(listItem.getText());}
+            catch (Exception e){
+                Log.i("Inside BindView", "onBindViewHolder: " + partFeed.get(position));
+                Log.i("Inside BindView", "Errr: " + e.toString());
+                Log.i("Inside BindView", "Position : " + position);
+            }
 
             GlideApp.with(context).asBitmap()
                     .load(listItem.getPhotoPath())

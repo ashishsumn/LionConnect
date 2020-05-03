@@ -21,33 +21,36 @@ public class HomeViewModel extends ViewModel {
     final String currUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
     final FirebaseStorage fbsInstance = FirebaseStorage.getInstance();
     public LinearLayoutManager llm;
-    private MutableLiveData<String> mText;
     public RecyclerView recList;
+    public RecyclerFeedDataAdapter adapter;
     public View root;
+    public boolean isLoading = false, done = false;
 
     public HomeViewModel(View view, Context context) {
         this.root = view;
         this.context = context;
         this.recList = (RecyclerView) view.findViewById(R.id.recyclerview_feed);
         this.llm = new LinearLayoutManager(context);
-        makeRecInVis();
-    }
-
-    public void makeFeed(ArrayList<feedDataStructure> data) {
         this.recList.setHasFixedSize(true);
         this.llm.setOrientation(RecyclerView.VERTICAL);
         this.recList.setLayoutManager(this.llm);
-        for (int i = 0; i < data.size(); i++) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(((feedDataStructure) data.get(i)).getUser());
-            String str = " ";
-            sb.append(str);
-            sb.append(((feedDataStructure) data.get(i)).getTimeStamp());
-            sb.append(str);
-            sb.append(((feedDataStructure) data.get(i)).getPhotoPath());
+        makeAdapterOnCreate();
+        makeRecInVis();
+    }
+
+    private void makeAdapterOnCreate(){
+        adapter = new RecyclerFeedDataAdapter(new ArrayList<feedDataStructure>());
+        this.recList.setAdapter(adapter);
+    }
+
+    public void makeFeed(ArrayList<feedDataStructure> data) {
+        if(data.size() < 10){
+            done = true;
+            adapter.setDone(done);
         }
+        adapter.removeLoaderFromList(done);
+        adapter.addDataToList(data);
         makeRecVis();
-        this.recList.setAdapter(new RecyclerFeedDataAdapter(data));
     }
 
     public void makeRecInVis() {
@@ -59,6 +62,18 @@ public class HomeViewModel extends ViewModel {
         this.recList.setVisibility(View.VISIBLE);
         this.root.findViewById(R.id.progress_circular_home).setVisibility(View.GONE);
     }
-
+    private void optional(ArrayList<feedDataStructure> data){
+        for (int i = 0; i < data.size(); i++) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(((feedDataStructure) data.get(i)).getUser());
+            String str = " ";
+            sb.append(str);
+            sb.append(((feedDataStructure) data.get(i)).getTimeStamp());
+            sb.append(str);
+            sb.append(((feedDataStructure) data.get(i)).getPhotoPath());
+            System.out.println(sb);
+        }
+        System.out.println("Is it done : "+done);
+    }
 
 }

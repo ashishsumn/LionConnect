@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,6 +42,13 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         TextView textView = (TextView) root.findViewById(R.id.text_home);
         this.homeViewModel = new HomeViewModel(root, getActivity());
+        this.homeViewModel.recList.addOnScrollListener(new EndlessRecyclerViewScrollListener(homeViewModel) {
+            @Override
+            public void onLoadMore(int totalItemsCount, RecyclerView view) {
+                homeViewModel.adapter.addLoaderToList();
+                getData();
+            }
+        });
         getData();
         return root;
     }
@@ -72,7 +81,7 @@ public class HomeFragment extends Fragment {
                                 , postInfo.get("timestamp").getAsString()));
                     }
                     Log.i("Inside not null successListener", "In success");
-                    HomeFragment.this.homeViewModel.makeFeed(returnList);
+                    homeViewModel.makeFeed(returnList);
                     return;
                 }
                 Log.i("Inside null successListener", "No data recieved");
@@ -83,6 +92,10 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+
+
+
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

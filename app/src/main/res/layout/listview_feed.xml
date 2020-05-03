@@ -25,24 +25,14 @@ android:id="@+id/listview_feed">
                 android:text="Search Results..."
                 android:textSize="20dp"/>
 
-            <LinearLayout
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="4dp">
-
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Username: "
-                    android:textSize="15dp"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/feedText"
-                    android:textSize="15dp"/>
-            </LinearLayout>
+                android:id="@+id/feedText"
+                android:textSize="20dp"
+                android:gravity="left"
+                android:textColor="@color/colorPrimary"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -53,7 +43,7 @@ android:id="@+id/listview_feed">
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Email: "
+                    android:text="About: "
                     android:textSize="15dp"/>
 
                 <TextView

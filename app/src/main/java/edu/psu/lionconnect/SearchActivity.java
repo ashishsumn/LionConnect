@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -188,6 +189,9 @@ public class SearchActivity extends AppCompatActivity {
             unfollow_user(UID);
         } else if (i == R.id.view_profile) {
             displayProfileDetails(UID);
+        } else if(i == R.id.BackToHome){
+            Intent intent = new Intent(this, bottomNavActivity.class);
+            startActivity(intent);
         }
     }
 }

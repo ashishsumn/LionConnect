@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
@@ -59,10 +60,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        // Get the data model based on position
+//        String[] listItem = mDataset.get(position);
+
+        // "UserName", "about_me", "campus", "degree", "email", "friends", "major", "name", "posts"
         // Set item views based on your views and data model
-        //"UserName", "about_me", "campus", "degree", "email", "friends", "major", "name", "posts"
-        (holder.textView).setText(mDataset.get("UserName"));
-        (holder.emailView).setText(mDataset.get("email"));
+        (holder.textView).setText(mDataset.get("name"));
+        (holder.emailView).setText(mDataset.get("about_me"));
     }
 
     // Return the size of your dataset (invoked by the layout manager)

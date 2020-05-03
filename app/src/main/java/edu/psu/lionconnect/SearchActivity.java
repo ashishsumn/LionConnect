@@ -19,6 +19,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -76,6 +78,7 @@ public class SearchActivity extends AppCompatActivity {
             }
             else{
                 UID = getIntent().getStringExtra("UID");
+                userName = findViewById(R.id.feedText);
                 check_following(UID, 0);
                 HashMap<String, String> searchedUserDetails = new HashMap<>();
                 for(String attr: userAttributes){
@@ -111,15 +114,31 @@ public class SearchActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d(TAG, document.getId() + " => " + document.getData());
                             Map<String, Object> myDetails = document.getData();
-                        Object myFollowings = myDetails.get("friends");
+                        Object myFollowings = myDetails.get("follows");
                         Map<String, Object> myFollowigs = (Map<String, Object>) myFollowings;
                         Log.d(TAG, myFollowings.toString()); // {testUser=true, BT0kXnKZBOWabDlGp9iaDbHvhWI3=true}
                         if(myFollowigs.containsKey(fin_targetUserId)){
                             Log.d(TAG,"following found");
                             if(deleteFlag==1){
                                 myFollowigs.remove(fin_targetUserId);
-                                myDetails.put("friends",myFollowigs);
+                                myDetails.put("follows",myFollowigs);
                                 usrRef.document(user.getUid()).set(myDetails);
+
+                                // removing current user from target user followed by - start
+                                final DocumentReference targetRef = fsInstance.collection("users").document(UID);
+                                targetRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            Map<String, Object> target_details = (Map<String, Object>) task.getResult().getData();
+                                            Map<String, Object> target_followedBy = (Map<String, Object>) task.getResult().get("followedBy");
+                                            target_followedBy.remove(user.getUid());
+                                            target_details.put("followedBy", target_followedBy);
+                                            targetRef.set(target_details);
+                                        }
+                                    }
+                                });
+                                // end
                                 follow.setVisibility(View.VISIBLE);
                                 unfollow.setVisibility(View.GONE);
                                 viewProfile.setVisibility(View.VISIBLE);
@@ -157,11 +176,16 @@ public class SearchActivity extends AppCompatActivity {
         if(user!=null){
             fsInstance = FirebaseFirestore.getInstance();
             final CollectionReference usrRef = fsInstance.collection("users");
-            Map<String,Map<String,Object>> friendData = new HashMap<>();
-            Map<String,Object> entry = new HashMap<>();
-            entry.put(target_userID,true);
-            friendData.put("friends",entry);
-            usrRef.document(user.getUid()).set(friendData, SetOptions.merge());
+            Map<String,Map<String,Object>> followData = new HashMap<>();
+            Map<String,Map<String,Object>> followedByData = new HashMap<>();
+            Map<String,Object> follow = new HashMap<>();
+            Map<String,Object> followedBy = new HashMap<>();
+            follow.put(target_userID,true);
+            followedBy.put(user.getUid(),true);
+            followData.put("follows",follow);
+            followedByData.put("followedBy",followedBy);
+            usrRef.document(user.getUid()).set(followData, SetOptions.merge());
+            usrRef.document(target_userID).set(followedByData, SetOptions.merge());
         }
 
         follow.setVisibility(View.GONE);
@@ -171,7 +195,7 @@ public class SearchActivity extends AppCompatActivity {
 
     // Unfollow user
     private void unfollow_user(String target_userID){
-        check_following(target_userID,1);
+        check_following(target_userID, 1);
     }
 
     // Display user details
@@ -181,7 +205,7 @@ public class SearchActivity extends AppCompatActivity {
 
     // Respond to button clicks
     public void onClick(View v) {
-        userName = findViewById(R.id.feedText);
+//        userName = findViewById(R.id.feedText);
         int i = v.getId();
         if (i == R.id.follow) {
             follow_user(UID);

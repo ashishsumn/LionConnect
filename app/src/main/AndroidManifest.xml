@@ -34,7 +34,6 @@
         </activity>
 
         <activity android:name=".ui.notifications.EditProfile"></activity>
-        <activity android:name=".ui.notifications.ProfilePage" />
         <activity android:name=".ui.notifications.NotificationsFragment" />
         <activity
             android:name=".bottomNavActivity"

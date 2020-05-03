@@ -108,6 +108,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_button"
         android:layout_gravity="center"
-        android:onClick="onClick"/>
+        android:onClick="onClick"
+        android:background="@color/colorPrimary"
+        android:textColor="#ffffff"/>
 
 </LinearLayout>

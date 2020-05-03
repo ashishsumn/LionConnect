@@ -92,7 +92,9 @@
         android:text="@string/forgot_pwd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button" />
+        app:layout_constraintTop_toBottomOf="@+id/login_button"
+        android:background="@color/colorPrimary"
+        android:textColor="#ffffff"/>
 
     <Button
         android:id="@+id/new_user_button"
@@ -103,6 +105,8 @@
         android:text="@string/new_user"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forgot_password_button" />
+        app:layout_constraintTop_toBottomOf="@+id/forgot_password_button"
+        android:background="@color/colorPrimary"
+        android:textColor="#ffffff"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

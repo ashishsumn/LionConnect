@@ -159,7 +159,6 @@ tools:context="edu.psu.lionconnect.ui.notifications.EditProfile">
             android:layout_marginRight="8dp"
             android:layout_marginTop="16dp"
             android:layout_gravity="end"
-
             android:textColor="#ffffff"
             android:onClick="returnToProfile"
             android:text="Change Picture"/>

@@ -21,6 +21,10 @@ public class feedDataStructure {
         this.user = user;
     }
 
+    public feedDataStructure(){
+
+    }
+
     public feedDataStructure(String photos, String description, String user, String userId,String timeStamp) {
         this.description = description;
         this.timeStamp = timeStamp;

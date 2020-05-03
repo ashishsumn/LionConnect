@@ -52,6 +52,7 @@ public class postActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+        justAnInstance = postDataModel.getInstance();
         im = findViewById(R.id.image_post);
         im.setImageResource(R.drawable.image1_background);
         et = findViewById(R.id.text_post);

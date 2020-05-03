@@ -58,8 +58,8 @@ public class CreateProfileActivity extends AppCompatActivity {
         Map<String, Object> createUserhash = new HashMap<>();
         Map<String, Object> createFriendshash = new HashMap<>();
         String userId = uid;
-        Map<String, Object> createPostHash = new HashMap<>();
 
+        Map<String, Object> createPostHash = new HashMap<>();
         createUserhash.put("UserName", name);
         createUserhash.put("name", mFullName.getText().toString());
         createUserhash.put("about_me", mAbout.getText().toString());
@@ -67,8 +67,6 @@ public class CreateProfileActivity extends AppCompatActivity {
         createUserhash.put("follows", createFriendshash);
         createUserhash.put("followedBy", createFriendshash);
         createUserhash.put("posts", createPostHash);
-
-        Log.d("userId", createUserhash.toString());
 
         this.fsInstance.collection("users").document(userId).set(createUserhash).addOnCompleteListener(new OnCompleteListener<Void>() {
             public void onComplete(Task<Void> task) {

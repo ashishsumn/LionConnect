@@ -22,6 +22,8 @@ public class CreateProfileActivity extends AppCompatActivity {
     private FirebaseFirestore fsInstance;
     private FirebaseAuth mAuth;
     private EditText mUserName;
+    private EditText mFullName;
+    private EditText mAbout;
 
     /* access modifiers changed from: protected */
     public void onCreate(Bundle savedInstanceState) {
@@ -29,7 +31,10 @@ public class CreateProfileActivity extends AppCompatActivity {
         setContentView((int) R.layout.activity_create_profile);
         this.fsInstance = FirebaseFirestore.getInstance();
         this.mAuth = FirebaseAuth.getInstance();
+
         this.mUserName = (EditText) findViewById(R.id.uidET);
+        this.mFullName = (EditText) findViewById(R.id.nameET);
+        this.mAbout = (EditText) findViewById(R.id.aboutET);
     }
 
     private void updateUserProfile() {
@@ -53,11 +58,16 @@ public class CreateProfileActivity extends AppCompatActivity {
         Map<String, Object> createUserhash = new HashMap<>();
         Map<String, Object> createFriendshash = new HashMap<>();
         String userId = uid;
+
+        Map<String, Object> createPostHash = new HashMap<>();
         createUserhash.put("UserName", name);
+        createUserhash.put("name", mFullName.getText().toString());
+        createUserhash.put("about_me", mAbout.getText().toString());
         createUserhash.put("email", email);
         createUserhash.put("follows", createFriendshash);
         createUserhash.put("followedBy", createFriendshash);
-        Log.d("userId", userId);
+        createUserhash.put("posts", createPostHash);
+
         this.fsInstance.collection("users").document(userId).set(createUserhash).addOnCompleteListener(new OnCompleteListener<Void>() {
             public void onComplete(Task<Void> task) {
                 if (task.isSuccessful()) {

@@ -25,18 +25,6 @@
             app:layout_constraintTop_toTopOf="parent"
             android:background="@color/colorPrimary"/>
 
-<!--        <ImageView-->
-<!--            android:id="@+id/update_imageView"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="182dp"-->
-<!--            android:gravity="center_vertical"-->
-<!--            android:src="@drawable/defavatar"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            android:background="@color/colorPrimary"/>-->
-
-
         <TextView
             android:id="@+id/uidTV"
             android:layout_width="wrap_content"
@@ -44,7 +32,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="30dp"
-            android:text="@string/uid_tv"
+            android:text="Build Your Profile"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/emailET"/>
@@ -56,49 +44,34 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:ems="10"
-            android:hint="@string/uid_et"
+            android:hint="Choose your username"
             android:inputType="text"
             app:layout_constraintTop_toBottomOf="@+id/uidTV"
             android:autofillHints="@string/name_autofillhint"/>
 
-        <TextView
-            android:id="@+id/roleTV"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/nameET"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="@string/role_tv"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/confPwdET"/>
+            android:ems="10"
+            android:hint="Enter your full name"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@+id/uidTV"
+            android:autofillHints="@string/name_autofillhint"/>
 
-
-
-        <RadioGroup
-            android:id="@+id/RB"
+        <EditText
+            android:id="@+id/aboutET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginHorizontal="40dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/roleTV">
-
-            <RadioButton
-                android:id="@+id/radioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/RB1"
-                android:layout_weight="1"
-                android:checked="true"/>
-
-            <RadioButton
-                android:id="@+id/radioButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/RB2"
-                android:layout_weight="1"/>
-        </RadioGroup>
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:ems="10"
+            android:hint="Tell us about yourself"
+            android:inputType="textMultiLine"
+            app:layout_constraintTop_toBottomOf="@+id/uidTV"
+            android:autofillHints="@string/name_autofillhint"/>
 
     </LinearLayout>
 

@@ -39,6 +39,7 @@ import java.util.concurrent.Executor;
 
 import edu.psu.lionconnect.MainActivity;
 import edu.psu.lionconnect.R;
+import io.paperdb.Paper;
 
 public class NotificationsFragment extends Fragment {
 
@@ -54,13 +55,14 @@ public class NotificationsFragment extends Fragment {
     private TextView main_fullname, main_campus, main_city, main_about_me, main_degree, main_major;
 
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         fAuth = FirebaseAuth.getInstance();
         mCurrentUser = fAuth.getCurrentUser();
         fStore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
-
+        Paper.init(getContext());
 
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
@@ -140,6 +142,7 @@ public class NotificationsFragment extends Fragment {
             }
 
             private void profileLogout(View v){
+                Paper.book().destroy();
                 fAuth.getInstance().signOut();
                 getActivity().finish();
                 startActivity(new Intent(getActivity(), MainActivity.class));

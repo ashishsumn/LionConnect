@@ -14,15 +14,21 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import io.paperdb.Paper;
 //import com.psu.LionConnect.R;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "EmailPassword";
+    public String UserEmailKey = "UserEmail";
+    public String UserPasswordKey = "UserPassword";
     /* access modifiers changed from: private */
     public FirebaseAuth mAuth;
     /* access modifiers changed from: private */
@@ -39,15 +45,38 @@ public class MainActivity extends AppCompatActivity {
         mPasswordField = findViewById(R.id.pwdET);
         mAuth = FirebaseAuth.getInstance();
         remember= findViewById(R.id.chkRemember);
-         
+        Paper.init(this);
+
+        final String retrieved_email = Paper.book().read(UserEmailKey);
+        String retrieved_password = Paper.book().read(UserPasswordKey);
+        Log.d("TAG", retrieved_email+ " --- "+retrieved_password);
+        if(retrieved_email != "" && retrieved_password != ""){
+            if(!TextUtils.isEmpty(retrieved_email) && !TextUtils.isEmpty(retrieved_password)){
+                Log.d("TAG", "We got this"+retrieved_email+" "+retrieved_password);
+                //////////////////
+                this.mAuth.signInWithEmailAndPassword(retrieved_email, retrieved_password).addOnCompleteListener((Activity) this, new OnCompleteListener<AuthResult>() {
+                            public void onComplete(Task<AuthResult> task) {
+                                boolean isSuccessful = task.isSuccessful();
+                                String str = MainActivity.TAG;
+                                if (isSuccessful) {
+                                    Log.d(str, "signInWithEmail:success");
+                                    FirebaseUser user = MainActivity.this.mAuth.getCurrentUser();
+                                    String displayName = user.getDisplayName();
+                                    if (!user.isEmailVerified()) {
+                                        Toast.makeText(MainActivity.this, "Please verify your email before logging-in", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        MainActivity.this.forwardToHome();
+                                    }
+                                }
+                            }
+                        });
+                /////////////////
+
+                        }
+        }
+
         SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
         String checkbox = preferences.getString("remember", "");
-        if(checkbox.equals("true")){
-//            forwardToHome();
-//            Intent intent = new Intent(MainActivity.this, );
-        }else if(checkbox.equals("false")){
-            Toast.makeText(this, "Please sign in", Toast.LENGTH_SHORT).show();
-        }
         this.remember.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 String str = "remember";
@@ -65,9 +94,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
-    private void signIn(String email, String password) {
+    private void signIn(final String email, final String password) {
         StringBuilder sb = new StringBuilder();
         sb.append("signIn:");
         sb.append(email);
@@ -78,6 +108,14 @@ public class MainActivity extends AppCompatActivity {
                     boolean isSuccessful = task.isSuccessful();
                     String str = MainActivity.TAG;
                     if (isSuccessful) {
+                        /////////////////////////
+                        Log.d("TAG", "We are into writing Paper");
+                        Paper.book().write(UserEmailKey, email);
+                        Log.d("TAG", "Email in book "+email + " : " + Paper.book().read(UserEmailKey) );
+                        Paper.book().write(UserPasswordKey, password);
+                        Log.d("TAG", "Pwd in book "+password+ " : " + Paper.book().read(UserPasswordKey));
+                        ////////////////////////
+
                         Log.d(str, "signInWithEmail:success");
                         FirebaseUser user = MainActivity.this.mAuth.getCurrentUser();
                         String displayName = user.getDisplayName();

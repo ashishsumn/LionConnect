@@ -65,7 +65,7 @@ public class SearchableActivity extends AppCompatActivity {
                             //no results returned
                             if(task.getResult().size()==0){
                                 Toast.makeText(SearchableActivity.this, "No search results found!!!", Toast.LENGTH_LONG).show();
-                                intent.putExtra("DisplayButtons", false);
+                                intent.putExtra("HideButtons", false);
                                 startActivity(intent);
                             }
 

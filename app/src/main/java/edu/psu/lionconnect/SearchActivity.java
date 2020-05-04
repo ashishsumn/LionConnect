@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,20 +34,20 @@ public class SearchActivity extends AppCompatActivity {
     private static final String TAG = "SearchTAG";
     private FirebaseFirestore fsInstance;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
     private FirebaseAuth mAuth;
-    private TextView userName;
-    private String UID;
     private Button follow;
-    private Button unfollow;
+    private Button unFollow;
     private Button viewProfile;
+    private String target_userID;
+    private String target_userName;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
         final String[] userAttributes = {"UserName", "about_me", "campus", "degree", "email", "friends", "major", "name", "posts"};
 
         recyclerView = (RecyclerView) findViewById(R.id.search_results);
@@ -58,47 +59,62 @@ public class SearchActivity extends AppCompatActivity {
         // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
-        layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
         // Buttons
         follow = findViewById(R.id.follow);
-        unfollow = findViewById(R.id.unfollow);
+        unFollow = findViewById(R.id.unfollow);
         viewProfile = findViewById(R.id.view_profile);
 
-        // If search results needs to be displayed
+        // If search performed
         if(getIntent().hasExtra("search_result")){
 
-            // Hide all buttons on unsuccessful results
-            if(getIntent().hasExtra("DisplayButtons")){
-                Log.d(TAG,"hiding buttons");
+            // Unsuccessful search
+            if(getIntent().hasExtra("HideButtons")){
                 follow.setVisibility(View.GONE);
-                unfollow.setVisibility(View.GONE);
+                unFollow.setVisibility(View.GONE);
                 viewProfile.setVisibility(View.GONE);
             }
+            //Successful search
             else{
-                UID = getIntent().getStringExtra("UID");
-                userName = findViewById(R.id.feedText);
-                check_following(UID, 0);
+                target_userID = getIntent().getStringExtra("UID");
+                //target_userName = findViewById(R.id.feedText).toString();
+
+                if(user.getUid().equalsIgnoreCase(target_userID)) {
+                    // user trying to follow own acc
+                    // code to deactivate follow button
+                    Log.d(TAG, "no recursion");
+                    follow.setVisibility(View.VISIBLE);
+                    follow.setEnabled(false);
+                }
+
+                check_following(target_userID, 0);
+
                 HashMap<String, String> searchedUserDetails = new HashMap<>();
+
+                // creating a map with searched user details
                 for(String attr: userAttributes){
                     searchedUserDetails.put(attr, getIntent().getStringExtra(attr));
                 }
-                Log.d(TAG, searchedUserDetails.toString());
+
+                // display the search results
                 displaySearchResult(searchedUserDetails);
             }
         }
+        // Search not yet performed
         else{
-            // hiding button on search page
+            // hiding button on search page: initial state
             follow.setVisibility(View.GONE);
-            unfollow.setVisibility(View.GONE);
+            unFollow.setVisibility(View.GONE);
             viewProfile.setVisibility(View.GONE);
         }
     }
 
-    // If the following status
-    // id deleteFlag == 1, unfollow the user
     private void check_following(String targetUserId, final int deleteFlag){
+        /*
+            If deleteFlag == 1, un-follow the targetUserId
+         */
 
         final FirebaseUser user = mAuth.getCurrentUser();
 
@@ -125,7 +141,7 @@ public class SearchActivity extends AppCompatActivity {
                                 usrRef.document(user.getUid()).set(myDetails);
 
                                 // removing current user from target user followed by - start
-                                final DocumentReference targetRef = fsInstance.collection("users").document(UID);
+                                final DocumentReference targetRef = fsInstance.collection("users").document(target_userID);
                                 targetRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -140,19 +156,19 @@ public class SearchActivity extends AppCompatActivity {
                                 });
                                 // end
                                 follow.setVisibility(View.VISIBLE);
-                                unfollow.setVisibility(View.GONE);
+                                unFollow.setVisibility(View.GONE);
                                 viewProfile.setVisibility(View.VISIBLE);
                             }
                             else if(deleteFlag==0){
                                 follow.setVisibility(View.GONE);
-                                unfollow.setVisibility(View.VISIBLE);
+                                unFollow.setVisibility(View.VISIBLE);
                                 viewProfile.setVisibility(View.VISIBLE);
                             }
                         }
                         else {
                             Log.d(TAG,"following not found");
                             follow.setVisibility(View.VISIBLE);
-                            unfollow.setVisibility(View.GONE);
+                            unFollow.setVisibility(View.GONE);
                             viewProfile.setVisibility(View.VISIBLE);
                         }
                     }
@@ -165,7 +181,8 @@ public class SearchActivity extends AppCompatActivity {
 
     // Display search results
     public void displaySearchResult(Map<String,String> search_result){
-        mAdapter = new SearchAdapter(search_result);
+
+        RecyclerView.Adapter mAdapter = new SearchAdapter(search_result);
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -173,24 +190,25 @@ public class SearchActivity extends AppCompatActivity {
     private void follow_user(String target_userID){
         final FirebaseUser user = mAuth.getCurrentUser();
 
-        if(user!=null){
             fsInstance = FirebaseFirestore.getInstance();
             final CollectionReference usrRef = fsInstance.collection("users");
-            Map<String,Map<String,Object>> followData = new HashMap<>();
-            Map<String,Map<String,Object>> followedByData = new HashMap<>();
-            Map<String,Object> follow = new HashMap<>();
-            Map<String,Object> followedBy = new HashMap<>();
-            follow.put(target_userID,true);
-            followedBy.put(user.getUid(),true);
-            followData.put("follows",follow);
-            followedByData.put("followedBy",followedBy);
+            Map<String, Map<String, Object>> followData = new HashMap<>();
+            Map<String, Map<String, Object>> followedByData = new HashMap<>();
+            Map<String, Object> follow_map = new HashMap<>();
+            Map<String, Object> followedBy = new HashMap<>();
+            follow_map.put(target_userID, true);
+            followedBy.put(user.getUid(), true);
+            followData.put("follows", follow_map);
+            followedByData.put("followedBy", followedBy);
             usrRef.document(user.getUid()).set(followData, SetOptions.merge());
             usrRef.document(target_userID).set(followedByData, SetOptions.merge());
-        }
 
-        follow.setVisibility(View.GONE);
-        unfollow.setVisibility(View.VISIBLE);
-        viewProfile.setVisibility(View.VISIBLE);
+            follow.setVisibility(View.GONE);
+            unFollow.setVisibility(View.VISIBLE);
+            viewProfile.setVisibility(View.VISIBLE);
+
+            Toast.makeText(SearchActivity.this,"following"+ target_userName,
+                    Toast.LENGTH_SHORT).show();
     }
 
     // Unfollow user
@@ -205,14 +223,14 @@ public class SearchActivity extends AppCompatActivity {
 
     // Respond to button clicks
     public void onClick(View v) {
-//        userName = findViewById(R.id.feedText);
+
         int i = v.getId();
         if (i == R.id.follow) {
-            follow_user(UID);
+            follow_user(target_userID);
         }else if (i == R.id.unfollow) {
-            unfollow_user(UID);
+            unfollow_user(target_userID);
         } else if (i == R.id.view_profile) {
-            displayProfileDetails(UID);
+            displayProfileDetails(target_userID);
         } else if(i == R.id.BackToHome){
             Intent intent = new Intent(this, bottomNavActivity.class);
             startActivity(intent);

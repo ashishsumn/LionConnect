@@ -63,7 +63,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         // Get the data model based on position
 //        String[] listItem = mDataset.get(position);
 
-        // "UserName", "about_me", "campus", "degree", "email", "friends", "major", "name", "posts"
+        //"UserName", "about_me", "campus", "degree", "email", "follows", "followedBy", "major", "name", "posts"
         // Set item views based on your views and data model
         (holder.textView).setText(mDataset.get("name"));
         (holder.emailView).setText(mDataset.get("about_me"));

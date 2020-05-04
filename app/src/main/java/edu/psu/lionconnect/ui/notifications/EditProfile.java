@@ -20,11 +20,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -84,9 +87,6 @@ public class EditProfile extends AppCompatActivity {
         profile_degree= findViewById(R.id.et_degree_edit_text);
         profile_major= findViewById(R.id.et_major_edit_text);
 
-
-
-
         Log.d(TAG, "onCreate: "+ fullname + " " + campus + " " + city  + " " + about_me + " " + degree + " " + major);
         StorageReference profileRef = storageReference.child("users"+fAuth.getCurrentUser().getUid()+"profile.jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -110,33 +110,45 @@ public class EditProfile extends AppCompatActivity {
                     return;
                 }
 
-                DocumentReference docRef = fStore.collection("users").document(user.getUid());
-                Map<String, Object> edited = new HashMap<>();
+                final DocumentReference docRef = fStore.collection("users").document(user.getUid());
+//                Map<String, Object> edited;
                 Log.d("TAG","Mapcreate -- OnCLickLisr");
-                edited.put("name", profile_fullname.getText().toString());
-                edited.put("city", profile_city.getText().toString());
-                edited.put("campus", profile_campus.getText().toString());
-                edited.put("about_me", profile_about_me.getText().toString());
-                edited.put("degree", profile_degree.getText().toString());
-                edited.put("major", profile_major.getText().toString());
-                docRef.set(edited).addOnSuccessListener(new OnSuccessListener<Void>() {
 
+                // added by Ashish - start
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("TAG","Go back to profile-- OnCLickLisr");
-                        Toast.makeText(EditProfile.this, "Profile is updated on DB", Toast.LENGTH_SHORT).show();
-                        //send user back to profile
-                        startActivity(new Intent(getApplicationContext(), NotificationsFragment.class));
-                        finish();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", e.toString());
-                        Toast.makeText(EditProfile.this, "Failed", Toast.LENGTH_SHORT).show();
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Map<String, Object> edited = task.getResult().getData();
+                            edited.put("name", profile_fullname.getText().toString());
+                            edited.put("city", profile_city.getText().toString());
+                            edited.put("campus", profile_campus.getText().toString());
+                            edited.put("about_me", profile_about_me.getText().toString());
+                            edited.put("degree", profile_degree.getText().toString());
+                            edited.put("major", profile_major.getText().toString());
+                            docRef.set(edited).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d("TAG","Go back to profile-- OnCLickLisr");
+                                    Toast.makeText(EditProfile.this, "Profile is updated on DB", Toast.LENGTH_SHORT).show();
+                                    //send user back to profile
+                                    startActivity(new Intent(getApplicationContext(), NotificationsFragment.class));
+                                    finish();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d("TAG", e.toString());
+                                    Toast.makeText(EditProfile.this, "Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+
+                        }
                     }
                 });
-
+                // added by Ashish - end
             }
         });
 

@@ -36,7 +36,7 @@ public class HomeFragment extends Fragment {
     /* access modifiers changed from: private */
     public HomeViewModel homeViewModel;
     Parcelable mListState;
-    String tempUsername = "testUser1";
+    long prevTs = 0;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -44,8 +44,8 @@ public class HomeFragment extends Fragment {
         this.homeViewModel = new HomeViewModel(root, getActivity());
         this.homeViewModel.recList.addOnScrollListener(new EndlessRecyclerViewScrollListener(homeViewModel) {
             @Override
-            public void onLoadMore(int totalItemsCount, RecyclerView view) {
-                homeViewModel.adapter.addLoaderToList();
+            public void onLoadMore(HomeViewModel model) {
+                model.adapter.addLoaderToList();
                 getData();
             }
         });
@@ -57,8 +57,11 @@ public class HomeFragment extends Fragment {
         FirebaseFirestore instance = FirebaseFirestore.getInstance();
         FirebaseStorage instance2 = FirebaseStorage.getInstance();
         String currUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        HashMap<String, String> user = new HashMap<>();
+        HashMap<String, Object> user = new HashMap<>();
         user.put("user", currUser);
+        if(prevTs != 0){
+            user.put("prevTs", prevTs);
+        }
         FirebaseFunctions.getInstance().getHttpsCallable("getPostInfo").
                 call(user).addOnSuccessListener((Activity) getActivity(), new OnSuccessListener<HttpsCallableResult>() {
             public void onSuccess(HttpsCallableResult httpsCallableResult) {
@@ -79,6 +82,7 @@ public class HomeFragment extends Fragment {
                                 , postInfo.get("user").getAsString()
                                 , postInfo.get("userId").getAsString()
                                 , postInfo.get("timestamp").getAsString()));
+                        prevTs = postInfo.get("longTimestamp").getAsLong();
                     }
                     Log.i("Inside not null successListener", "In success");
                     homeViewModel.makeFeed(returnList);
@@ -92,10 +96,6 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-
-
-
-
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

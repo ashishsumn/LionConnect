@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -71,14 +70,13 @@ public class SearchableActivity extends AppCompatActivity {
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                    Map<String, Object> userDetails = document.getData();
+                                Map<String, Object> userDetails = document.getData();
                                 intent.putExtra("UID",document.getId());
-//                                int rec_index = 0;
 
                                 for(Map.Entry<String,Object> entry:userDetails.entrySet()){
-//                                    intent.putExtra(Integer.toString(rec_index), entry.getValue().toString());
-//                                    rec_index++;
-                                    intent.putExtra(entry.getKey(), entry.getValue().toString());
+                                    if(entry.getValue()!=null){
+                                        intent.putExtra(entry.getKey(), entry.getValue().toString());
+                                    }
                                 }
                                 Log.d(TAG,"forwarding to display...");
                                 startActivity(intent);

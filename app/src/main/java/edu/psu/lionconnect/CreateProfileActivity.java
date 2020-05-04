@@ -56,20 +56,24 @@ public class CreateProfileActivity extends AppCompatActivity {
     /* access modifiers changed from: private */
     public void createUserInFirebase(String name, String email, String uid, Uri photo) {
         Map<String, Object> createUserhash = new HashMap<>();
-        Map<String, Object> createFriendshash = new HashMap<>();
-        Map<String, Object> createPostsshash = new HashMap<>();
-        String userId = uid;
+        Map<String, Object> emptyHashMap = new HashMap<>();
 
+        //"UserName", "about_me", "campus", "degree", "email", "follows", "followedBy", "major", "name", "posts", city
         Map<String, Object> createPostHash = new HashMap<>();
         createUserhash.put("UserName", name);
-        createUserhash.put("name", mFullName.getText().toString());
         createUserhash.put("about_me", mAbout.getText().toString());
+        createUserhash.put("campus", null);
+        createUserhash.put("degree", null);
         createUserhash.put("email", email);
-        createUserhash.put("follows", createFriendshash);
-        createUserhash.put("followedBy", createFriendshash);
-        createUserhash.put("posts", createPostHash);
+        createUserhash.put("follows", emptyHashMap);
+        createUserhash.put("followedBy", emptyHashMap);
+        createUserhash.put("major", null);
+        createUserhash.put("city", null);
+        createUserhash.put("name", mFullName.getText().toString());
+        createUserhash.put("posts", emptyHashMap);
 
-        this.fsInstance.collection("users").document(userId).set(createUserhash).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+        this.fsInstance.collection("users").document(uid).set(createUserhash).addOnCompleteListener(new OnCompleteListener<Void>() {
             public void onComplete(Task<Void> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(CreateProfileActivity.this, "Account Created! You are good to go!", Toast.LENGTH_LONG).show();

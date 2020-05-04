@@ -11,10 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -206,9 +203,6 @@ public class SearchActivity extends AppCompatActivity {
             follow.setVisibility(View.GONE);
             unFollow.setVisibility(View.VISIBLE);
             viewProfile.setVisibility(View.VISIBLE);
-
-            Toast.makeText(SearchActivity.this,"following"+ target_userName,
-                    Toast.LENGTH_SHORT).show();
     }
 
     // Unfollow user
@@ -217,8 +211,11 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     // Display user details
-    private void displayProfileDetails(String target_userName){
-        Toast.makeText(SearchActivity.this, "trying to view "+target_userName, Toast.LENGTH_LONG).show();
+    private void displayProfileDetails(String target_userID){
+
+        final Intent intent = new Intent(this, ViewProfileActivity.class);
+        intent.putExtra("targetUID",target_userID);
+        startActivity(intent);
     }
 
     // Respond to button clicks

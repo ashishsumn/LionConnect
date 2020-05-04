@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.psu.lionconnect.R;
+import edu.psu.lionconnect.bottomNavActivity;
 import io.grpc.Context;
 
 public class EditProfile extends AppCompatActivity {
@@ -133,7 +134,7 @@ public class EditProfile extends AppCompatActivity {
                                     Log.d("TAG","Go back to profile-- OnCLickLisr");
                                     Toast.makeText(EditProfile.this, "Profile is updated on DB", Toast.LENGTH_SHORT).show();
                                     //send user back to profile
-                                    startActivity(new Intent(getApplicationContext(), NotificationsFragment.class));
+                                    startActivity(new Intent(getApplicationContext(), bottomNavActivity.class));
                                     finish();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
@@ -210,9 +211,11 @@ public class EditProfile extends AppCompatActivity {
     }
 
     public void returnToProfile(View view) {
-        Fragment fragment =new NotificationsFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment).commit();
+        Intent intent = new Intent(this, bottomNavActivity.class);
+        startActivity(intent);
+//        Fragment fragment =new NotificationsFragment();
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        transaction.replace(R.id.fragment_container, fragment).commit();
 //        startActivity(new Intent(getApplicationContext(), NotificationsFragment.class));
     }
 

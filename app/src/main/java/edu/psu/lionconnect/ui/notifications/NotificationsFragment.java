@@ -6,6 +6,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -79,7 +82,6 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()){
-//                    String name = documentSnapshot.getString("name");
                     main_fullname.setText(documentSnapshot.getString("name"));
                     main_campus.setText(documentSnapshot.getString("campus"));
                     main_city.setText(documentSnapshot.getString("city"));
@@ -98,35 +100,35 @@ public class NotificationsFragment extends Fragment {
 
 
 
-        button = (Button) root.findViewById(R.id.profile_edit_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                profileEditClick(v);
-            }
-
-            private void profileEditClick(View v) {
-                Intent intent;
-                   //                intent.putExtra("name",)
-                intent = new Intent(v.getContext(), EditProfile.class);
-
-                //pass the data to Edit Profile to show already existing data
-                intent.putExtra("name",main_fullname.getText().toString());
-                intent.putExtra("campus", main_campus.getText().toString());
-                intent.putExtra("city",main_city.getText().toString());
-                intent.putExtra("about_me",main_about_me.getText().toString());
-                intent.putExtra("degree",main_degree.getText().toString());
-                intent.putExtra("major",main_major.getText().toString());
-                startActivity(intent);
-            }
-        });
+//        button = (Button) root.findViewById(R.id.profile_edit_button);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                profileEditClick(v);
+//            }
+//
+//            private void profileEditClick(View v) {
+//                Intent intent;
+//                   //                intent.putExtra("name",)
+//                intent = new Intent(v.getContext(), EditProfile.class);
+//
+//                //pass the data to Edit Profile to show already existing data
+//                intent.putExtra("name",main_fullname.getText().toString());
+//                intent.putExtra("campus", main_campus.getText().toString());
+//                intent.putExtra("city",main_city.getText().toString());
+//                intent.putExtra("about_me",main_about_me.getText().toString());
+//                intent.putExtra("degree",main_degree.getText().toString());
+//                intent.putExtra("major",main_major.getText().toString());
+//                startActivity(intent);
+//            }
+//        });
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         profileImage = root.findViewById(R.id.profile_page_image);
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        StorageReference profileRef = storageReference.child("users"+fAuth.getCurrentUser().getUid()+"profile.jpg");
+        StorageReference profileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"/profile.jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -134,27 +136,72 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
-        logout = (Button) root.findViewById(R.id.profile_logout_button);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                profileLogout(v);
-            }
+//        logout = (Button) root.findViewById(R.id.profile_logout_button);
+//        logout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                profileLogout(v);
+//            }
+//
+//            private void profileLogout(View v){
+//                Paper.book().destroy();
+//                fAuth.getInstance().signOut();
+//                getActivity().finish();
+//                startActivity(new Intent(getActivity(), MainActivity.class));
+//
+//            }
+//        });
 
-            private void profileLogout(View v){
-                Paper.book().destroy();
-                fAuth.getInstance().signOut();
-                getActivity().finish();
-                startActivity(new Intent(getActivity(), MainActivity.class));
-
-            }
-        });
-
-
+        setHasOptionsMenu(true);
         return root;
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.settings_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_edit:
+                editProfile();
+                Toast.makeText(getContext(), "Edit Profile", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.item_logout:
+                logout();
+                Toast.makeText(getContext(), "Logout", Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void logout() {Paper.book().destroy();
+        fAuth.getInstance().signOut();
+        getActivity().finish();
+        startActivity(new Intent(getActivity(), MainActivity.class));
+    }
+
+    private void editProfile() {
+        Intent intent;
+        intent = new Intent(getActivity(), EditProfile.class);
+        //pass the data to Edit Profile to show already existing data
+        intent.putExtra("name",main_fullname.getText().toString());
+        intent.putExtra("campus", main_campus.getText().toString());
+        intent.putExtra("city",main_city.getText().toString());
+        intent.putExtra("about_me",main_about_me.getText().toString());
+        intent.putExtra("degree",main_degree.getText().toString());
+        intent.putExtra("major",main_major.getText().toString());
+        startActivity(intent);
+    }
+
+    //    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+////        MenuInflater inflater = getMenuInflater();
+////        inflater.inflate(R.menu.settings_menu, menu);
+////        return true;
+//    }
 
 
 }

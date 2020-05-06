@@ -89,7 +89,8 @@ public class EditProfile extends AppCompatActivity {
         profile_major= findViewById(R.id.et_major_edit_text);
 
         Log.d(TAG, "onCreate: "+ fullname + " " + campus + " " + city  + " " + about_me + " " + degree + " " + major);
-        StorageReference profileRef = storageReference.child("users"+fAuth.getCurrentUser().getUid()+"profile.jpg");
+        StorageReference profileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"/profile.jpg");
+        Log.d("TAG", "Profile path -" + profileRef);
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -188,7 +189,7 @@ public class EditProfile extends AppCompatActivity {
 
     private void uploadImageToFirebase(Uri imageURI) {
         //Upload Image to Firebase storage
-        final StorageReference fileRef = storageReference.child("users"+fAuth.getCurrentUser().getUid()+"profile.jpg");
+        final StorageReference fileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"/profile.jpg");
         fileRef.putFile(imageURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

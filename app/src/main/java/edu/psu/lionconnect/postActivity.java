@@ -57,6 +57,7 @@ public class postActivity extends AppCompatActivity {
         im.setImageResource(R.drawable.image1_background);
         et = findViewById(R.id.text_post);
         user = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        justAnInstance.setUser(user);
     }
 
     public void selectImage(View view) {
@@ -77,8 +78,6 @@ public class postActivity extends AppCompatActivity {
 
             im.setImageBitmap(imageBm);
             justAnInstance.setImagePath(data.getData());
-            justAnInstance.setDescription(et.getText().toString());
-            justAnInstance.setUser(user);
         }
     }
 
@@ -116,6 +115,7 @@ public class postActivity extends AppCompatActivity {
 //        justAnInstance.setUser(user);
         final String temp = justAnInstance.getUser();
         Uri file = justAnInstance.getImagePath();
+        justAnInstance.setDescription(et.getText().toString());
         FirebaseApp.initializeApp(getApplicationContext());
 
 //        Get an instance of database and storage

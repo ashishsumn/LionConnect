@@ -26,30 +26,36 @@
     <Button
         android:id="@+id/button_cancel"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+
         android:layout_margin="8dp"
         android:layout_marginBottom="40dp"
         android:background="@color/colorPrimary"
         android:onClick="cancelClick"
+
+        android:gravity="center"
+
         android:text="Cancel"
         android:textAlignment="center"
         android:textColor="#ffff"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/padder_text"
         app:layout_constraintEnd_toStartOf="@id/button_post"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_post"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+
         android:layout_margin="8dp"
         android:layout_marginBottom="40dp"
         android:background="@color/colorPrimary"
         android:onClick="postClick"
         android:text="Post"
         android:textAlignment="center"
+        android:gravity="center"
         android:textColor="#ffff"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/padder_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/button_cancel" />
 
@@ -69,18 +75,25 @@
     <Button
         android:id="@+id/button_done"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_margin="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/padder_text"
+
         android:background="@color/colorPrimary"
         android:textColor="#ffff"
         android:text="Done"
         android:visibility="gone"
         android:onClick="cancelClick"/>
 
-
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/padder_text"
+        android:layout_height="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

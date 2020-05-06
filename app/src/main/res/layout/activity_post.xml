@@ -27,10 +27,12 @@
         android:id="@+id/button_cancel"
         android:layout_width="0dp"
         android:layout_height="40dp"
+
         android:layout_margin="8dp"
         android:layout_marginBottom="40dp"
         android:background="@color/colorPrimary"
         android:onClick="cancelClick"
+
         android:gravity="center"
 
         android:text="Cancel"
@@ -44,12 +46,11 @@
         android:id="@+id/button_post"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_margin="8dp"
 
+        android:layout_margin="8dp"
         android:layout_marginBottom="40dp"
         android:background="@color/colorPrimary"
         android:onClick="postClick"
-
         android:text="Post"
         android:textAlignment="center"
         android:gravity="center"
@@ -65,7 +66,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-
         android:visibility="gone"
         android:maxHeight="32dp"
         android:maxWidth="32dp"

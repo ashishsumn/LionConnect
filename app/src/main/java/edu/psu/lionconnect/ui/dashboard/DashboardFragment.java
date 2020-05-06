@@ -51,6 +51,7 @@ public class DashboardFragment extends Fragment {
                 getData();
             }
         });
+
         getData();
         return root;
     }

@@ -9,6 +9,11 @@
     <string name="enter_pwd_et">Password</string>
     <string name="login">Login</string>
     <string name="new_user">New User</string>
+    <string name="forgot_pwd">Forgot Password</string>
+    <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="view_profile">View Profile</string>
+    <string name="BackToHome">Back To Home</string>
 
     <!-- Registration Page -->
 
@@ -27,6 +32,9 @@
     <string name="RB2">Teacher</string>
     <string name="register">Register</string>
     <string name="to_login">Back to Login</string>
+    <string name="email_val">psu.edu</string>
+    <string name="signout">Sign Out</string>
+    <string name="createProfile">Create Your Profile</string>
 
     <string name="action_settings">Setting</string>
     <string name="title_activity_bottom_nav">bottomNavActivity</string>
@@ -35,4 +43,14 @@
     <string name="title_notifications">Profile</string>
     <string name="postTitle">What\'s on your mind?</string>
     <string name="remember_me">Remember Me</string>
+    <string name="title_activity_user_name_role">UserNameRoleActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_create_profile">CreateProfileActivity</string>
 </resources>

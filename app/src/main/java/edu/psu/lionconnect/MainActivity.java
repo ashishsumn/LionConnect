@@ -1,35 +1,40 @@
 package edu.psu.lionconnect;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
+
+import io.paperdb.Paper;
+//import com.psu.LionConnect.R;
 
 public class MainActivity extends AppCompatActivity {
-
     private static final String TAG = "EmailPassword";
-    private FirebaseAuth mAuth;
-    private EditText mEmailField;
+    public String UserEmailKey = "UserEmail";
+    public String UserPasswordKey = "UserPassword";
+    /* access modifiers changed from: private */
+    public FirebaseAuth mAuth;
+    /* access modifiers changed from: private */
+    public EditText mEmailField;
     private EditText mPasswordField;
     private CheckBox remember;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         mPasswordField = findViewById(R.id.pwdET);
         mAuth = FirebaseAuth.getInstance();
         remember= findViewById(R.id.chkRemember);
+<<<<<<< HEAD
 
         SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
         String checkbox = preferences.getString("remember", "");
@@ -48,105 +54,154 @@ public class MainActivity extends AppCompatActivity {
 //            Intent intent = new Intent(MainActivity.this, );
         }else if(checkbox.equals("false")){
             Toast.makeText(this, "Please sign in", Toast.LENGTH_SHORT).show();
+=======
+        Paper.init(this);
+
+        final String retrieved_email = Paper.book().read(UserEmailKey);
+        String retrieved_password = Paper.book().read(UserPasswordKey);
+        Log.d("TAG", retrieved_email+ " --- "+retrieved_password);
+        if(retrieved_email != "" && retrieved_password != ""){
+            if(!TextUtils.isEmpty(retrieved_email) && !TextUtils.isEmpty(retrieved_password)){
+                Log.d("TAG", "We got this"+retrieved_email+" "+retrieved_password);
+                //////////////////
+                this.mAuth.signInWithEmailAndPassword(retrieved_email, retrieved_password).addOnCompleteListener((Activity) this, new OnCompleteListener<AuthResult>() {
+                            public void onComplete(Task<AuthResult> task) {
+                                boolean isSuccessful = task.isSuccessful();
+                                String str = MainActivity.TAG;
+                                if (isSuccessful) {
+                                    Log.d(str, "signInWithEmail:success");
+                                    FirebaseUser user = MainActivity.this.mAuth.getCurrentUser();
+                                    String displayName = user.getDisplayName();
+                                    if (!user.isEmailVerified()) {
+                                        Toast.makeText(MainActivity.this, "Please verify your email before logging-in", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        MainActivity.this.forwardToHome();
+                                    }
+                                }
+                            }
+                        });
+                /////////////////
+
+                        }
+>>>>>>> 8d4ea32da9f90867beabe1a7aaa22d3465e95e9c
         }
 
-        remember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
+        SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+        String checkbox = preferences.getString("remember", "");
+        this.remember.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(buttonView.isChecked()){
-                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("remember", "true");
+                String str = "remember";
+                String str2 = "checkbox";
+                if (buttonView.isChecked()) {
+                    Editor editor = MainActivity.this.getSharedPreferences(str2, 0).edit();
+                    editor.putString(str, "true");
                     editor.apply();
                     Toast.makeText(MainActivity.this, "Checked", Toast.LENGTH_SHORT).show();
-                }else if(!buttonView.isChecked()){
-                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("remember", "false");
-                    editor.apply();
+                } else if (!buttonView.isChecked()) {
+                    Editor editor2 = MainActivity.this.getSharedPreferences(str2, 0).edit();
+                    editor2.putString(str, "false");
+                    editor2.apply();
                     Toast.makeText(MainActivity.this, "Unchecked", Toast.LENGTH_SHORT).show();
-
                 }
+            }
+        });
+
+    }
+
+    private void signIn(final String email, final String password) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("signIn:");
+        sb.append(email);
+        Log.d(TAG, sb.toString());
+        if (validateEmail() && validatePassword()) {
+            this.mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener((Activity) this, new OnCompleteListener<AuthResult>() {
+                public void onComplete(Task<AuthResult> task) {
+                    boolean isSuccessful = task.isSuccessful();
+                    String str = MainActivity.TAG;
+                    if (isSuccessful) {
+                        /////////////////////////
+                        Log.d("TAG", "We are into writing Paper");
+                        Paper.book().write(UserEmailKey, email);
+                        Log.d("TAG", "Email in book "+email + " : " + Paper.book().read(UserEmailKey) );
+                        Paper.book().write(UserPasswordKey, password);
+                        Log.d("TAG", "Pwd in book "+password+ " : " + Paper.book().read(UserPasswordKey));
+                        ////////////////////////
+
+                        Log.d(str, "signInWithEmail:success");
+                        FirebaseUser user = MainActivity.this.mAuth.getCurrentUser();
+                        String displayName = user.getDisplayName();
+                        if (!user.isEmailVerified()) {
+                            Toast.makeText(MainActivity.this, "Please verify your email before logging-in", Toast.LENGTH_SHORT).show();
+                        } else {
+                            MainActivity.this.forwardToHome();
+                        }
+                    } else {
+                        Log.w(str, "signInWithEmail:failure", task.getException());
+                        Toast.makeText(MainActivity.this, "Wrong EmailId or Password.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+    }
+
+    private boolean validateEmail() {
+        boolean valid = true;
+        String email = this.mEmailField.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            this.mEmailField.setError("Required.");
+            valid = false;
+        } else {
+            this.mEmailField.setError(null);
+        }
+        String str = "Please enter a valid PSU email";
+        if (email.indexOf(64) == -1) {
+            this.mEmailField.setError(str);
+            return false;
+        } else if (!email.split("@", 2)[1].equalsIgnoreCase("psu.edu")) {
+            this.mEmailField.setError(str);
+            return false;
+        } else {
+            this.mEmailField.setError(null);
+            return valid;
+        }
+    }
+
+    private boolean validatePassword() {
+        if (TextUtils.isEmpty(this.mPasswordField.getText().toString())) {
+            this.mPasswordField.setError("Required.");
+            return false;
+        }
+        this.mPasswordField.setError(null);
+        return true;
+    }
+
+    /* access modifiers changed from: private */
+    public void forwardToHome() {
+        startActivity(new Intent(this, bottomNavActivity.class));
+    }
+
+    private void pwdReset(String emailAddress) {
+        FirebaseAuth.getInstance().sendPasswordResetEmail(emailAddress).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+            public void onComplete(Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d(MainActivity.TAG, "Email sent.");
+                    Toast.makeText(MainActivity.this, "Password reset email sent", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                MainActivity.this.mEmailField.setError("Please enter a valid PSU email");
             }
         });
     }
 
-
-    // Sign in
-    private void signIn(String email, String password) {
-        Log.d(TAG, "signIn:" + email);
-        if (!validateForm()) {
-            return;
-        }
-
-        // [START sign_in_with_email]
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            String name = user.getDisplayName();
-                            Toast.makeText(MainActivity.this,name,
-                                    Toast.LENGTH_SHORT).show();
-                            forwardToHome();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Wrong EmailId or Password.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-
-//                        // [START_EXCLUDE]
-//                        if (!task.isSuccessful()) {
-//                            mStatusTextView.setText(R.string.auth_failed);
-//                        }
-//                        hideProgressBar();
-//                        // [END_EXCLUDE]
-                    }
-                });
-        // [END sign_in_with_email]
-    }
-
-    // Validate email id and password fields
-    private boolean validateForm() {
-        boolean valid = true;
-
-        String email = mEmailField.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            mEmailField.setError("Required.");
-            valid = false;
-        } else {
-            mEmailField.setError(null);
-        }
-
-        String password = mPasswordField.getText().toString();
-        if (TextUtils.isEmpty(password)) {
-            mPasswordField.setError("Required.");
-            valid = false;
-        } else {
-            mPasswordField.setError(null);
-        }
-
-        return valid;
-    }
-
-    // Redirect to dashboard on successful login
-    private void forwardToHome(){
-        Intent intent = new Intent(this, bottomNavActivity.class);
-        startActivity(intent);
-    }
-
-    // Respond to button clicks
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.login_button) {
-            signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
+            signIn(this.mEmailField.getText().toString(), this.mPasswordField.getText().toString());
         } else if (i == R.id.new_user_button) {
-            Intent intent = new Intent(this, RegistrationActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, RegistrationActivity.class));
+        } else if (i == R.id.forgot_password_button && validateEmail()) {
+            pwdReset(this.mEmailField.getText().toString());
         }
     }
 }

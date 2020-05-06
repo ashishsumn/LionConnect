@@ -56,7 +56,7 @@
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:hint="@string/enter_pwd_et"
-            android:inputType="textEmailAddress"
+            android:inputType="textPassword"
             app:layout_constraintTop_toBottomOf="@+id/pwdTV"
             android:autofillHints="@string/name_autofillhint"/>
 
@@ -79,7 +79,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/login"
         android:layout_marginTop="20dp"
-        android:onClick="onClick"/>
+        android:onClick="onClick"
+        android:background="@color/colorPrimary"
+        android:textColor="#ffffff"/>
+
+    <Button
+        android:id="@+id/forgot_password_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:onClick="onClick"
+        android:text="@string/forgot_pwd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_button"
+        android:background="@color/colorPrimary"
+        android:textColor="#ffffff"/>
 
     <Button
         android:id="@+id/new_user_button"
@@ -90,6 +105,8 @@
         android:text="@string/new_user"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button" />
+        app:layout_constraintTop_toBottomOf="@+id/forgot_password_button"
+        android:background="@color/colorPrimary"
+        android:textColor="#ffffff"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

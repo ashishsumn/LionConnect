@@ -36,7 +36,7 @@ public class HomeFragment extends Fragment {
     /* access modifiers changed from: private */
     public HomeViewModel homeViewModel;
     Parcelable mListState;
-    long prevTs = 0;
+    int prevTs = 0;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -75,6 +75,7 @@ public class HomeFragment extends Fragment {
                     JsonArray feedValueArray = ((JsonObject) new JsonParser().parse(httpsCallableResult.getData().toString())).getAsJsonArray("data");
                     ArrayList<feedDataStructure> returnList = new ArrayList<>();
                     Iterator it = feedValueArray.iterator();
+                    int a = 0;
                     while (it.hasNext()) {
                         JsonObject postInfo = (JsonObject) it.next();
                         returnList.add(new feedDataStructure(postInfo.get("photos").getAsString()
@@ -82,8 +83,9 @@ public class HomeFragment extends Fragment {
                                 , postInfo.get("user").getAsString()
                                 , postInfo.get("userId").getAsString()
                                 , postInfo.get("timestamp").getAsString()));
-                        prevTs = postInfo.get("longTimestamp").getAsLong();
+                        a = a + 1;
                     }
+                    prevTs += a;
                     Log.i("Inside not null successListener", "In success");
                     homeViewModel.makeFeed(returnList);
                     return;
@@ -100,8 +102,10 @@ public class HomeFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        mListState = homeViewModel.llm.onSaveInstanceState();
-        outState.putParcelable("list", mListState);
+        if(homeViewModel.llm != null){
+            mListState = homeViewModel.llm.onSaveInstanceState();
+            outState.putParcelable("list", mListState);
+        }
     }
 
     @Override

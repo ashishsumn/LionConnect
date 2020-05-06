@@ -133,7 +133,7 @@ public class EditProfile extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d("TAG","Go back to profile-- OnCLickLisr");
-                                    Toast.makeText(EditProfile.this, "Profile is updated on DB", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(EditProfile.this, "Profile updated", Toast.LENGTH_SHORT).show();
                                     //send user back to profile
                                     startActivity(new Intent(getApplicationContext(), bottomNavActivity.class));
                                     finish();

@@ -97,28 +97,28 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mListState = homeViewModel.llm.onSaveInstanceState();
-        outState.putParcelable("list", mListState);
-    }
+//    @Override
+//    public void onSaveInstanceState(@NonNull Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        mListState = homeViewModel.llm.onSaveInstanceState();
+//        outState.putParcelable("list", mListState);
+//    }
 
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-
-        if(savedInstanceState != null){
-            mListState = savedInstanceState.getParcelable("list");
-            homeViewModel.llm.onRestoreInstanceState(mListState);
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mListState != null) {
-            homeViewModel.llm.onRestoreInstanceState(mListState);
-        }
-    }
+//    @Override
+//    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+//        super.onViewStateRestored(savedInstanceState);
+//
+//        if(savedInstanceState != null){
+//            mListState = savedInstanceState.getParcelable("list");
+//            homeViewModel.llm.onRestoreInstanceState(mListState);
+//        }
+//    }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        if (mListState != null) {
+//            homeViewModel.llm.onRestoreInstanceState(mListState);
+//        }
+//    }
 }

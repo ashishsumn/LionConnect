@@ -233,4 +233,13 @@ public class SearchActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+    @Override
+    public void onBackPressed()
+    {
+        // code here to show dialog
+        super.onBackPressed();  // optional depending on your needs
+        Intent intent = new Intent(this, bottomNavActivity.class);
+        startActivity(intent);
+    }
 }

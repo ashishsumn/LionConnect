@@ -3,14 +3,21 @@ package edu.psu.lionconnect;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.Map;
 
@@ -21,6 +28,9 @@ public class ViewProfileActivity extends AppCompatActivity {
     private String target_UID;
     private FirebaseFirestore fsInstance;
     private TextView main_fullname, main_campus, main_city, main_about_me, main_degree, main_major;
+    ImageView profileImage;
+    StorageReference storageReference;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +45,16 @@ public class ViewProfileActivity extends AppCompatActivity {
         main_about_me = findViewById(R.id.tv_profile_bio);
         main_degree = findViewById(R.id.tv_profile_degree);
         main_major = findViewById(R.id.tv_profile_major);
+
+        profileImage = findViewById(R.id.profile_page_image);
+        storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference profileRef = storageReference.child("users/"+target_UID+"/profile.jpg");
+        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(profileImage);
+            }
+        });
 
         displayProfile();
 

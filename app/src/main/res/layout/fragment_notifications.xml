@@ -78,7 +78,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="10dp"
             android:paddingVertical="15dp"
-            android:text="profile_name"
             android:textAlignment="center"
             android:textColor="@color/colorAccent"
             android:textSize="25dp"
@@ -122,8 +121,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="ABOUT ME"
-            android:textColor="@color/fui_bgGitHub"
-            android:textSize="10dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15dp"
             />
 
         <TextView
@@ -131,7 +130,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:textColor="@color/colorPrimaryDark"
             android:textSize="15dp" />
 
         <TextView
@@ -140,8 +138,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="LOCATION"
-            android:textColor="@color/fui_bgGitHub"
-            android:textSize="10dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15dp"
             />
 
         <TextView
@@ -149,8 +147,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="profile_city"
-            android:textColor="@color/colorAccent"
             android:textSize="15dp"
             />
 
@@ -170,8 +166,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="CAMPUS LOCATION"
-            android:textColor="@color/fui_bgGitHub"
-            android:textSize="10dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15dp"
             />
 
         <TextView
@@ -179,8 +175,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="profile_campus"
-            android:textColor="@color/colorPrimary"
             android:textSize="15dp" />
 
         <TextView
@@ -188,8 +182,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="DEGREE"
-            android:textColor="@color/fui_bgGitHub"
-            android:textSize="10dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15dp"
             />
 
         <TextView
@@ -197,8 +191,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="profile_degree"
-            android:textColor="@color/colorAccent"
             android:textSize="15dp"/>
 
         <TextView
@@ -206,8 +198,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="MAJOR"
-            android:textColor="@color/fui_bgGitHub"
-            android:textSize="10dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15dp"
             />
 
         <TextView
@@ -215,8 +207,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="profile_major"
-            android:textColor="@color/colorAccent"
             android:textSize="15dp" />
 
 

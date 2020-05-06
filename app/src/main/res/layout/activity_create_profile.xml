@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -14,16 +21,16 @@
         android:layout_marginTop="50dp"
         android:orientation="vertical"
         android:id="@+id/registration_form">
-        <ImageView
-            android:id="@+id/update_imageView"
-            android:layout_width="match_parent"
-            android:layout_height="182dp"
-            android:gravity="center_vertical"
-            android:src="@drawable/icon_post"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@color/colorPrimary"/>
+<!--        <ImageView-->
+<!--            android:id="@+id/update_imageView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="182dp"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:src="@drawable/icon_post"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            android:background="@color/colorPrimary"/>-->
 
         <TextView
             android:id="@+id/uidTV"
@@ -57,6 +64,7 @@
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:hint="Enter your full name"
+            android:layout_marginTop="20dp"
             android:inputType="text"
             app:layout_constraintTop_toBottomOf="@+id/uidTV"
             android:autofillHints="@string/name_autofillhint"/>
@@ -69,6 +77,7 @@
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:hint="Tell us about yourself"
+            android:layout_marginTop="20dp"
             android:inputType="textMultiLine"
             app:layout_constraintTop_toBottomOf="@+id/uidTV"
             android:autofillHints="@string/name_autofillhint"/>
@@ -78,6 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginTop="20dp"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault"
             android:text="Upload Profile Picture" />
 
@@ -132,3 +142,4 @@
         android:padding="10dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -1,8 +1,12 @@
 package edu.psu.lionconnect.ui.notifications;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -30,6 +35,7 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import edu.psu.lionconnect.MainActivity;
 import edu.psu.lionconnect.R;
+import edu.psu.lionconnect.Settings;
 import io.paperdb.Paper;
 
 public class NotificationsFragment extends Fragment {
@@ -44,7 +50,7 @@ public class NotificationsFragment extends Fragment {
     private ImageView profileImage;
     private StorageReference storageReference;
     private TextView main_fullname, main_campus, main_city, main_about_me, main_degree, main_major;
-
+    View view;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -140,6 +146,17 @@ public class NotificationsFragment extends Fragment {
 //            }
 //        });
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        boolean changeBackground = prefs.getBoolean("background", true);
+        if(changeBackground){
+            root.getRootView().setBackgroundColor(Color.LTGRAY);
+        }
+        boolean forgetPassword = prefs.getBoolean("forgetPassword",true);
+        if(forgetPassword){
+            Paper.book().destroy();
+        }
+
+
         setHasOptionsMenu(true);
         return root;
     }
@@ -160,6 +177,10 @@ public class NotificationsFragment extends Fragment {
             case R.id.item_logout:
                 logout();
                 Toast.makeText(getContext(), "Logout", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.item_settings:
+                startActivity(new Intent(getActivity(), Settings.class));
+                Toast.makeText(getContext(), "Settings", Toast.LENGTH_SHORT).show();
                 return true;
         }
         return super.onOptionsItemSelected(item);

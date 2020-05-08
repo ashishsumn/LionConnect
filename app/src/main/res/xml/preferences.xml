@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Settings">
+        <SwitchPreference android:title="Switch to dark mode"
+            android:key="background"
+            android:summary="New color added to background"/>
+
+    </PreferenceCategory>
+    <SwitchPreference
+        android:key="forgetPassword"
+        android:summary="Forget password"
+        android:title="Remove saved username and password" />
+</PreferenceScreen>

@@ -109,11 +109,14 @@ public class MainActivity extends AppCompatActivity {
                     String str = MainActivity.TAG;
                     if (isSuccessful) {
                         /////////////////////////
-                        Log.d("TAG", "We are into writing Paper");
-                        Paper.book().write(UserEmailKey, email);
-                        Log.d("TAG", "Email in book "+email + " : " + Paper.book().read(UserEmailKey) );
-                        Paper.book().write(UserPasswordKey, password);
-                        Log.d("TAG", "Pwd in book "+password+ " : " + Paper.book().read(UserPasswordKey));
+                        remember= findViewById(R.id.chkRemember);
+                        if(remember.isChecked()) {
+                            Log.d("TAG", "We are into writing Paper");
+                            Paper.book().write(UserEmailKey, email);
+                            Log.d("TAG", "Email in book " + email + " : " + Paper.book().read(UserEmailKey));
+                            Paper.book().write(UserPasswordKey, password);
+                            Log.d("TAG", "Pwd in book " + password + " : " + Paper.book().read(UserPasswordKey));
+                        }
                         ////////////////////////
 
                         Log.d(str, "signInWithEmail:success");
